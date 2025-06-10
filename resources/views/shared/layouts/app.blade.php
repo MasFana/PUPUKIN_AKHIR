@@ -10,8 +10,7 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
         
-            @stack('head')
-    
+        @stack('head')
 
         <!-- Styles / Scripts -->
         @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
@@ -22,7 +21,7 @@
             </style>
         @endif
     </head>
-    <body class="bg-[#FDFDFC] dark:bg-[#0a0a0a] min-h-screen w-full">
+    <body class="bg-[#FDFDFC] min-h-screen w-full">
             @yield('content')
     </body>
 

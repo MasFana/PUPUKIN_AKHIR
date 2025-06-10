@@ -8,6 +8,9 @@ use App\Http\Controllers\AdminController;
 
 // Public Routes
 Route::middleware('guest')->group(function () {
+    Route::get('/',function () {
+        return view('welcome');
+    });
 });
 
 // Shared Auth Routes
