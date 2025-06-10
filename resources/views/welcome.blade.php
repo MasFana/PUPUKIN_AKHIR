@@ -25,7 +25,7 @@
 
         <div class="h-full lg:h-3/4 grid grid-cols-1 gap-8 lg:grid-cols-3">
             <!-- Map Section -->
-            <div class="max-[75%,1/2vh]: overflow-hidden rounded-lg bg-white shadow-md lg:col-span-2">
+            <div class="min-h-96 overflow-hidden rounded-lg bg-white shadow-md lg:col-span-2">
                 <div id="map"></div>
             </div>
 
