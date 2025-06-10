@@ -4,23 +4,41 @@
 @push('head')
     <!-- Leaflet CSS -->
     <link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet" />
+    <!-- Range slider CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css"/>
 
     <style>
         #map {
             width: 100%;
-            height: 100%; /* Fixed height for better rendering */
+            height: 100%;
         }
         .shop-card:hover {
             transform: translateY(-2px);
         }
+        .irs--modern .irs-bar {
+            background: #4ade80;
+        }
+        .irs--modern .irs-handle {
+            border: 3px solid #4ade80;
+        }
+        .range-slider-container {
+            padding: 0 15px;
+            margin-bottom: 20px;
+        }
+        .range-value {
+            font-weight: bold;
+            color: #4ade80;
+            margin-left: 5px;
+        }
+
     </style>
 @endpush
 
 @section('content')
     <div class="container mx-auto px-4 py-8 h-screen">
         <header class="mb-8">
-            <h1 class="text-3xl font-bold text-green-800">Fertilizer Shops Near You</h1>
-            <p class="text-gray-600">Find subsidized fertilizer shops in your area</p>
+            <h1 class="text-3xl font-bold text-green-800">Toko Pupuk Disekitar Anda</h1>
+            <p class="text-gray-600">Temukan toko pupuk bersubsidi di daerah Anda</p>
         </header>
 
         <div class="h-full lg:h-3/4 grid grid-cols-1 gap-8 lg:grid-cols-3">
@@ -30,10 +48,22 @@
             </div>
 
             <!-- Shops List Section -->
-            <div class="overflow-y-auto rounded-lg bg-white p-6 shadow-md">
-                <h2 class="mb-4 text-xl font-semibold text-green-700">Available Shops</h2>
-                <div class="space-y-4" id="shops-list">
-                    <!-- Shops will be dynamically inserted here -->
+            <div class="overflow-hidden rounded-lg bg-white shadow-md flex flex-col">
+                <div class="filter-container p-6">
+                    <h2 class="mb-2 text-xl font-semibold text-green-700">Filter Toko</h2>
+                    <div class="range-slider-container">
+                        <label for="range-slider" class="block text-sm font-medium text-gray-700">
+                            Jarak Maksimum: <span class="range-value">5</span> km
+                        </label>
+                        <input type="text" id="range-slider" name="range-slider" value="5" />
+                    </div>
+                </div>
+                
+                <div class="overflow-y-auto p-6 pt-0 flex-grow">
+                    <h2 class="mb-4 text-xl font-semibold text-green-700">Pupuk Terdekat</h2>
+                    <div class="space-y-4" id="shops-list">
+                        <!-- Shops will be dynamically inserted here -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -50,6 +80,10 @@
 
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- jQuery (required for ion range slider) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Ion Range Slider JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
 
     <script>
         // Wait for DOM to be fully loaded
@@ -64,7 +98,8 @@
                 license: "LIC12345",
                 distance: null,
                 stock: "Urea, NPK, ZA",
-                status: "Open"
+                status: "Open",
+                open: true
             },
             {
                 id: 2,
@@ -75,7 +110,8 @@
                 license: "LIC67890",
                 distance: null,
                 stock: "Urea, NPK",
-                status: "Open"
+                status: "Open",
+                open: true
             },
             {
                 id: 3,
@@ -86,7 +122,32 @@
                 license: "LIC54321",
                 distance: null,
                 stock: "Urea, ZA",
-                status: "Closed (Opens at 8AM)"
+                status: "Closed (Opens at 8AM)",
+                open: false
+            },
+            {
+                id: 4,
+                name: "Pupuk Sejahtera",
+                lat: -8.180000,
+                lng: 113.730000,
+                address: "Jl. Kenanga No. 78, Kab. Jember",
+                license: "LIC98765",
+                distance: null,
+                stock: "Urea, NPK, ZA, Organik",
+                status: "Open",
+                open: true
+            },
+            {
+                id: 5,
+                name: "Toko Tani Maju",
+                lat: -8.150000,
+                lng: 113.700000,
+                address: "Jl. Anggrek No. 34, Kab. Jember",
+                license: "LIC45678",
+                distance: null,
+                stock: "Urea, NPK",
+                status: "Closed (Opens tomorrow)",
+                open: false
             }];
 
             // Initialize the map with a default view
@@ -102,11 +163,30 @@
                 minZoom: 3
             }).addTo(map);
 
-            // Variables to store user location
+            // Variables to store user location and filter settings
             let userLat = null;
             let userLng = null;
             let userMarker = null;
             let markers = [];
+            let maxDistance = 5; // Default max distance in km
+
+            // Initialize range slider
+            $("#range-slider").ionRangeSlider({
+                type: "single",
+                min: 1,
+                max: 20,
+                from: maxDistance,
+                step: 1,
+                grid: true,
+                grid_num: 4,
+                skin: "modern",
+                onChange: function(data) {
+                    maxDistance = data.from;
+                    $(".range-value").text(maxDistance);
+                    filterAndRenderShops();
+                }
+            });
+
 
             // Function to calculate distance between two coordinates in km
             function calculateDistance(lat1, lon1, lat2, lon2) {
@@ -125,17 +205,92 @@
                 return deg * (Math.PI / 180);
             }
 
+            // Function to filter shops based on distance and open status
+            function filterShops() {
+                return shops.filter(shop => {
+                    // Check if shop is within max distance
+                    const withinDistance = userLat && userLng 
+                        ? shop.distance <= maxDistance 
+                        : true; // Show all if location not available
+                    
+                    // Check if shop should be shown based on open status
+
+                    return withinDistance;
+                });
+            }
+
+            // Function to filter and render shops
+            function filterAndRenderShops() {
+                const filteredShops = filterShops();
+                renderShopsList(filteredShops);
+                updateShopMarkers(filteredShops);
+                adjustMapZoom(filteredShops); // Add this line to adjust zoom
+
+            }
+
+            // Function to adjust map zoom based on filtered shops
+    function adjustMapZoom(filteredShops) {
+        // If we have user location and filtered shops
+        if (userLat && userLng && filteredShops.length > 0) {
+            // Create bounds that include user location
+            const bounds = L.latLngBounds([
+                [userLat, userLng]
+            ]);
+            
+            // Extend bounds to include all filtered shops
+            filteredShops.forEach(shop => {
+                bounds.extend([shop.lat, shop.lng]);
+            });
+            
+            // Fit the map to the bounds with padding
+            if (bounds.isValid()) {
+                map.fitBounds(bounds, {
+                    padding: [50, 50], // Add 50px padding on all sides
+                    maxZoom: 16 // Prevent zooming too close
+                });
+                
+                // If the zoom level is too far out, set a reasonable zoom
+                if (map.getZoom() > 14) {
+                    map.setZoom(14);
+                }
+            }
+        } else if (filteredShops.length > 0) {
+            // If no user location but we have filtered shops
+            const bounds = L.latLngBounds([]);
+            filteredShops.forEach(shop => {
+                bounds.extend([shop.lat, shop.lng]);
+            });
+            
+            if (bounds.isValid()) {
+                map.fitBounds(bounds, {
+                    padding: [50, 50],
+                    maxZoom: 14
+                });
+            }
+        }
+        // If no shops match the filter, we don't adjust the zoom
+    }
+
             // Function to render shops list
-            function renderShopsList() {
+            function renderShopsList(shopsToRender = shops) {
                 const shopsList = document.getElementById('shops-list');
                 shopsList.innerHTML = '';
 
                 // Sort shops by distance (if available)
-                const sortedShops = [...shops].sort((a, b) => {
+                const sortedShops = [...shopsToRender].sort((a, b) => {
                     if (a.distance === null) return 1;
                     if (b.distance === null) return -1;
                     return a.distance - b.distance;
                 });
+
+                if (sortedShops.length === 0) {
+                    shopsList.innerHTML = `
+                        <div class="text-center py-4 text-gray-500">
+                            Tidak ada toko yang ditemukan dengan filter saat ini.
+                        </div>
+                    `;
+                    return;
+                }
 
                 sortedShops.forEach(shop => {
                     const shopElement = document.createElement('div');
@@ -196,10 +351,30 @@
                             <p class="text-sm">${shop.address}</p>
                             <p class="text-sm mt-1"><span class="font-medium">Status:</span> ${shop.status}</p>
                             <p class="text-sm"><span class="font-medium">Stock:</span> ${shop.stock}</p>
+                            ${userLat && userLng ? `<p class="text-sm"><span class="font-medium">Distance:</span> ${shop.distance.toFixed(1)} km</p>` : ''}
                         </div>
                     `;
 
                     marker.bindPopup(popupContent);
+                });
+            }
+
+            // Function to update shop markers based on filter
+            function updateShopMarkers(filteredShops) {
+                markers.forEach(marker => {
+                    const shopId = marker.options.shopId;
+                    const shop = shops.find(s => s.id === shopId);
+                    const shouldShow = filteredShops.some(s => s.id === shopId);
+                    
+                    if (shouldShow) {
+                        if (!map.hasLayer(marker)) {
+                            marker.addTo(map);
+                        }
+                    } else {
+                        if (map.hasLayer(marker)) {
+                            map.removeLayer(marker);
+                        }
+                    }
                 });
             }
 
@@ -233,24 +408,27 @@
                     shop.distance = calculateDistance(userLat, userLng, shop.lat, shop.lng);
                 });
 
-                // Render the updated shops list
-                renderShopsList();
+                // Filter and render the shops
+                filterAndRenderShops();
 
-                // Create bounds that include user location and all shops
+                // Create bounds that include user location and filtered shops
+                const filteredShops = filterShops();
                 const bounds = L.latLngBounds([
                     [userLat, userLng] // Add user location first
                 ]);
 
-                // Extend bounds to include all shop locations
-                shops.forEach(shop => {
+                // Extend bounds to include filtered shop locations
+                filteredShops.forEach(shop => {
                     bounds.extend([shop.lat, shop.lng]);
                 });
 
                 // Fit the map to the bounds with padding
-                map.fitBounds(bounds, {
-                    padding: [50, 50], // Add 50px padding on all sides
-                    maxZoom: 16 // Prevent zooming too close
-                });
+                if (bounds.isValid()) {
+                    map.fitBounds(bounds, {
+                        padding: [50, 50],
+                        maxZoom: 16
+                    });
+                }
 
                 // If the zoom level is too far out, set a reasonable zoom
                 if (map.getZoom() > 14) {
@@ -283,7 +461,7 @@
                     map.setView([-8.165833, 113.716944], 14);
                 }
 
-                renderShopsList();
+                filterAndRenderShops();
             }
 
             // Initialize the map with shop markers
@@ -294,8 +472,8 @@
             if (navigator.geolocation) {
                 const geoOptions = {
                     enableHighAccuracy: true,
-                    timeout: 5000, // 5 seconds timeout
-                    maximumAge: 0 // Don't use cached position
+                    timeout: 5000,
+                    maximumAge: 0
                 };
 
                 navigator.geolocation.getCurrentPosition(
@@ -321,7 +499,7 @@
                     });
                 }
 
-                renderShopsList();
+                filterAndRenderShops();
             }
 
             // Handle window resize to ensure map tiles load properly
