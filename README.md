@@ -1,5 +1,42 @@
 # PUP PUK in
 
+## Design
+
+### Primary Colors
+| Role               | Hex       | Preview                          | Usage                     |
+|--------------------|-----------|----------------------------------|---------------------------|
+| Primary Green      | `#4ade80` | <div style="background:#4ade80; width:100%; height:24px; border:1px solid #ddd;"></div> | Main CTAs, positive actions |
+| Green-Dark         | `#166534` | <div style="background:#166534; width:100%; height:24px; border:1px solid #ddd;"></div> | Headings, important text |
+| Green-Light        | `#dcfce7` | <div style="background:#dcfce7; width:100%; height:24px; border:1px solid #ddd;"></div> | Success backgrounds |
+
+### Semantic Colors
+| Role               | Hex       | Preview                          | Usage                     |
+|--------------------|-----------|----------------------------------|---------------------------|
+| Error/Red          | `#ef4444` | <div style="background:#ef4444; width:100%; height:24px; border:1px solid #ddd;"></div> | Delete buttons, errors |
+| Warning/Amber      | `#f59e0b` | <div style="background:#f59e0b; width:100%; height:24px; border:1px solid #ddd;"></div> | Warnings, pending states |
+| Info/Blue          | `#3b82f6` | <div style="background:#3b82f6; width:100%; height:24px; border:1px solid #ddd;"></div> | Notifications, links |
+| Success/Green      | `#10b981` | <div style="background:#10b981; width:100%; height:24px; border:1px solid #ddd;"></div> | Confirmation messages |
+
+### Neutral Scale
+| Role               | Hex       | Preview                          | Usage                     |
+|--------------------|-----------|----------------------------------|---------------------------|
+| Gray-50            | `#f9fafb` | <div style="background:#f9fafb; width:100%; height:24px; border:1px solid #ddd;"></div> | App background |
+| Gray-200           | `#e5e7eb` | <div style="background:#e5e7eb; width:100%; height:24px; border:1px solid #ddd;"></div> | Borders, dividers |
+| Gray-500           | `#6b7280` | <div style="background:#6b7280; width:100%; height:24px; border:1px solid #ddd;"></div> | Secondary text |
+| Gray-900           | `#111827` | <div style="background:#111827; width:100%; height:24px; border:1px solid #ddd;"></div> | Primary text |
+
+### Characteristic
+- Clean, Modern Interface with ample white space
+- Card-based Layout 
+- Subtle Shadows for depth
+- Smooth Hover Effects 
+- Clear Visual Hierarchy with typography and color
+
+---
+
+
+
+## Directory Structure
 ```
 ├── app
     ├── Http
