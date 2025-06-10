@@ -25,10 +25,6 @@ class Fertilizer extends Model
         return $this->hasMany(Quota::class);
     }
 
-    public function request()
-    {
-        return $this->hasMany(Request::class);
-    }
 
     public function transactions()
     {

@@ -11,8 +11,8 @@ class Quota extends Model
     protected $fillable = [
         'customer_id',
         'fertilizer_id',
-        'quantity_kg',
-        'year',
+        'max_kg_per_month',
+        'remaining_kg'
     ];
 
     public function fertilizer()
@@ -25,8 +25,5 @@ class Quota extends Model
         return $this->belongsTo(Customer::class, 'customer_id');
     }
 
-    public function getQuantityKgAttribute($value)
-    {
-        return number_format($value, 0, ',', '.');
-    }
+
 }
