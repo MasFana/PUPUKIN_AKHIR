@@ -93,5 +93,5 @@
     │   ├── shared
     │       └── layouts
     │       │   └── app.blade.php
-        └── welcome.blade.php
+    │   └── welcome.blade.php
 ```
