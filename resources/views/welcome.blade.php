@@ -30,7 +30,6 @@
             color: #4ade80;
             margin-left: 5px;
         }
-
     </style>
 @endpush
 
