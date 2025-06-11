@@ -49,7 +49,7 @@
                             </div>
                             <div>
                                 <p class="text-md text-gray-500">Luas Lahan</p> 
-                                <p class="text-gray-900 text-lg">{{ number_format($customer->farm_area, 2) }} hektar</p> 
+                                <p class="text-gray-900 text-lg">{{ number_format($customer->farm_area, 0) }} hektar</p> 
                             </div>
                             <div>
                                 <p class="text-md text-gray-500">Alamat</p> 
