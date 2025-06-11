@@ -17,7 +17,7 @@
                 <div class="px-8 py-6">
                     <!-- Monthly Summary -->
                     <div class="mb-8 p-6 bg-gray-50 rounded-lg">
-                        <h2 class="text-xl font-semibold text-gray-800 mb-4">Ringkasan Bulan Ini</h2>
+                        <h2 class="text-xl font-semibold text-gray-800 mb-4">Kuota Bulan Ini</h2>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div class="bg-white p-4 rounded-lg shadow">
                                 <p class="text-sm text-gray-500">Total Kuota Bulanan</p>
@@ -33,37 +33,19 @@
                             </div>
                         </div>
                         <p class="mt-4 text-sm text-gray-500">
-                            Luas lahan Anda: {{ $customer->farm_area }} hektar × 1 kg/hektar/bulan
+                            Perhitungan: {{ $customer->farm_area }} hektar × 10 kg/hektar/bulan
                         </p>
                     </div>
 
-                    <!-- Fertilizer Breakdown -->
-                    <div>
-                        <h2 class="text-xl font-semibold text-gray-800 mb-4">Detail per Jenis Pupuk</h2>
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200">
-                                <thead class="bg-gray-50">
-                                    <tr>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jenis Pupuk</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Maksimal per Bulan</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Terpakai</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sisa</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
-                                    @foreach($fertilizer_quotas as $quota)
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $quota['fertilizer_name'] }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $quota['max_kg_per_month'] }} kg</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $quota['used_kg_this_month'] }} kg</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold {{ $quota['remaining_kg'] > 0 ? 'text-green-600' : 'text-red-600' }}">
-                                            {{ $quota['remaining_kg'] }} kg
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                    <!-- Additional Info -->
+                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                        <h3 class="text-lg font-medium text-blue-800 mb-2">Informasi Kuota</h3>
+                        <ul class="list-disc list-inside text-blue-700 space-y-1">
+                            <li>Kuota dihitung berdasarkan luas lahan Anda</li>
+                            <li>Kuota reset setiap awal bulan</li>
+                            <li>1 hektar = 10 kg pupuk per bulan</li>
+                            <li>Kuota berlaku untuk semua jenis pupuk</li>
+                        </ul>
                     </div>
                 </div>
             </div>

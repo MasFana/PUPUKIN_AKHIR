@@ -15,14 +15,9 @@ class Fertilizer extends Model
     ];
 
 
-    public function requests()
+    public function stockRequests()
     {
-        return $this->hasMany(Request::class);
-    }
-
-    public function quota()
-    {
-        return $this->hasMany(Quota::class);
+        return $this->hasMany(StockRequest::class);
     }
 
 

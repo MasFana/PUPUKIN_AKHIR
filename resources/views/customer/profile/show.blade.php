@@ -58,8 +58,19 @@
                         </div>
                     </div>
 
+                    <!-- Logout -->
+                    <div class="flex justify-end mt-8">
+
+                    </div>
+
                     <!-- Actions -->
-                    <div class="flex justify-end mt-8"> <!-- Added margin-top -->
+                    <div class="flex justify-between mt-8"> <!-- Added margin-top -->
+                        <form action="{{ route('logout') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                Logout
+                            </button>
+                        </form>
                         <a href="{{ route('customer.profile.edit') }}" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                             Edit Profil <!-- Increased button size -->
                         </a>
