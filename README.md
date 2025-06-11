@@ -106,7 +106,6 @@
     │       ├── orders
     │       │   ├── create.blade.php
     │       │   ├── index.blade.php
-    │       │   └── show.blade.php
     │       ├── profile
     │       │   ├── edit.blade.php
     │       │   └── show.blade.php
