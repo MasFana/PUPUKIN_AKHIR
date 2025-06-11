@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CustomerProfileController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\CustomerQuotaController;
 // Public Routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
@@ -40,4 +41,6 @@ Route::middleware(['auth', 'customer'])->group(function () {
     Route::get('/profile', [CustomerProfileController::class, 'show'])->name('customer.profile.show');
     Route::get('/profile/edit', [CustomerProfileController::class, 'edit'])->name('customer.profile.edit');
     Route::post('/profile/update', [CustomerProfileController::class, 'update'])->name('customer.profile.update');
+    Route::get('/quota', [CustomerQuotaController::class, 'index'])->name('quotas.index');
+
 });
