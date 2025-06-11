@@ -22,9 +22,9 @@ class Owner extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function requests()
+    public function stockRequests()
     {
-        return $this->hasMany(Request::class);
+        return $this->hasMany(StockRequest::class);
     }
 
     public function stock()

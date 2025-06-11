@@ -9,7 +9,8 @@
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-        
+        <script src="//unpkg.com/alpinejs" defer></script>
+
         @stack('head')
 
         <!-- Styles / Scripts -->
@@ -21,7 +22,18 @@
             </style>
         @endif
     </head>
-    <body class="bg-[#FDFDFC] min-h-screen w-full">
+    <body class="bg-[#FDFDFC] min-h-screen w-full"x-data="{ open: false }">
+        @if (Auth::check())
+        @if (Auth::user()->role == 'admin')
+            
+        @elseif(Auth::user()->role == 'user')
+        
+        @elseif (Auth::user()->role == 'customer')
+            <x-navbar/>
+        @endif
+        
+        @endif
+        
             @yield('content')
     </body>
 
