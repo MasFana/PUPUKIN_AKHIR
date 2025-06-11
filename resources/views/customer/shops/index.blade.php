@@ -89,6 +89,7 @@
         // Wait for DOM to be fully loaded
         document.addEventListener('DOMContentLoaded', function() {
             const shops = @json($shops);
+            console.log("Shops data:", shops);
 
             // Initialize the map with a default view
             const map = L.map('map', {
@@ -235,14 +236,14 @@
                 sortedShops.forEach(shop => {
                     const shopElement = document.createElement('div');
                     shopElement.className = `shop-card p-4 border rounded-lg transition-all duration-200 ${
-                        shop.status.includes('Open') ? 'border-green-200 bg-green-50' : 'border-gray-200 bg-gray-50'
+                        shop.status.includes('Buka') ? 'border-green-200 bg-green-50' : 'border-gray-200 bg-gray-50'
                     }`;
 
                     shopElement.innerHTML = `
                         <div class="flex justify-between items-start">
                             <h3 class="font-semibold text-lg text-green-800">${shop.name}</h3>
                             <span class="px-2 py-1 text-xs rounded-full ${
-                                shop.status.includes('Open') ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                                shop.status.includes('Buka') ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
                             }">${shop.status}</span>
                         </div>
                         <p class="text-gray-600 text-sm mt-1">${shop.address}</p>
@@ -254,7 +255,7 @@
                             <span class="text-gray-700">${shop.distance ? `${shop.distance.toFixed(1)} km` : 'Distance calculating...'}</span>
                         </div>
                         <div class="mt-2">
-                            <span class="text-xs font-medium text-gray-500">Available:</span>
+                            <span class="text-xs font-medium text-gray-500">Tersedia:</span>
                             <span class="text-sm text-gray-700 ml-1">${shop.stock}</span>
                         </div>
                     `;
