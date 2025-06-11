@@ -8,7 +8,9 @@
             <div class="flex w-full flex-col justify-center p-8 md:p-12 lg:w-1/2 lg:p-16">
                 <div class="mx-auto w-full max-w-md">
                     <!-- Logo -->
-                    <div class="mb-4 text-2xl font-bold text-green-600">Pupukin</div>
+                        <div class="mb-4 text-2xl font-bold text-green-600">Pupukin</div>
+    
+                    
 
                     <!-- Header -->
                     <h1 class="mb-4 text-2xl font-bold text-gray-900">Halo Selamat Datang!!!</h1>

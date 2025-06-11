@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -84,7 +85,7 @@ class AuthController extends Controller
             'shop_name' => $request->shop_name,
             'address' => $request->address,
             'long' => $request->long,
-            'lat' => $request->lat,
+            'license_number' => 'LIC' . strtoupper(Str::random(10)), // Generate a random license number
         ]);
 
     } else {

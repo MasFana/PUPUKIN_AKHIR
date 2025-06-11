@@ -88,66 +88,7 @@
     <script>
         // Wait for DOM to be fully loaded
         document.addEventListener('DOMContentLoaded', function() {
-            const shops = [{
-                id: 1,
-                name: "MasFana Fertilizer Center",
-                lat: -8.165833,
-                lng: 113.716944,
-                address: "Jl. Raya Jember, Kec. Kalisat, Kab. Jember",
-                license: "LIC12345",
-                distance: null,
-                stock: "Urea, NPK, ZA",
-                status: "Open",
-                open: true
-            },
-            {
-                id: 2,
-                name: "Tani Makmur Fertilizer",
-                lat: -8.168000,
-                lng: 113.720000,
-                address: "Jl. Kalisat No. 12, Kab. Jember",
-                license: "LIC67890",
-                distance: null,
-                stock: "Urea, NPK",
-                status: "Open",
-                open: true
-            },
-            {
-                id: 3,
-                name: "Subur Jaya Fertilizer",
-                lat: -8.163000,
-                lng: 113.715000,
-                address: "Jl. Mangga No. 45, Kab. Jember",
-                license: "LIC54321",
-                distance: null,
-                stock: "Urea, ZA",
-                status: "Closed (Opens at 8AM)",
-                open: false
-            },
-            {
-                id: 4,
-                name: "Pupuk Sejahtera",
-                lat: -8.180000,
-                lng: 113.730000,
-                address: "Jl. Kenanga No. 78, Kab. Jember",
-                license: "LIC98765",
-                distance: null,
-                stock: "Urea, NPK, ZA, Organik",
-                status: "Open",
-                open: true
-            },
-            {
-                id: 5,
-                name: "Toko Tani Maju",
-                lat: -8.150000,
-                lng: 113.700000,
-                address: "Jl. Anggrek No. 34, Kab. Jember",
-                license: "LIC45678",
-                distance: null,
-                stock: "Urea, NPK",
-                status: "Closed (Opens tomorrow)",
-                open: false
-            }];
+            const shops = @json($shops);
 
             // Initialize the map with a default view
             const map = L.map('map', {

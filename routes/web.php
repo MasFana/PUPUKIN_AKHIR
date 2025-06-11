@@ -18,7 +18,7 @@ Route::get('/register/customer', [AuthController::class, 'showCustomerRegisterFo
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::get('/',function () {
     return view('welcome');
-});
+})->name('landing');
 
 
 

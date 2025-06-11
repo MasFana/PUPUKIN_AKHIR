@@ -22,16 +22,18 @@
             </style>
         @endif
     </head>
-    <body class="bg-[#FDFDFC] min-h-screen w-full"x-data="{ open: false }">
+    <body class="bg-[#FDFDFC] min-h-screen w-full">
         @if (Auth::check())
-        @if (Auth::user()->role == 'admin')
+            @if (Auth::user()->role == 'admin')
+                
+            @elseif(Auth::user()->role == 'user')
             
-        @elseif(Auth::user()->role == 'user')
-        
-        @elseif (Auth::user()->role == 'customer')
-            <x-navbar/>
-        @endif
-        
+            @elseif (Auth::user()->role == 'customer')
+                <x-navbar/>
+            @endif
+        @else
+            <x-navbar-guest/>
+
         @endif
         
             @yield('content')

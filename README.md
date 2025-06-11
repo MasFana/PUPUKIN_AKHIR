@@ -1,5 +1,56 @@
 # PUP PUK in
 
+## Test User Accounts
+
+### Admin
+
+| Field     | Value               |
+|-----------|---------------------|
+| Email     | `admin@pupukin.test`|
+| Password  | `password`          |
+| Role      | `admin`             |
+
+### Customer
+
+| Field       | Value                           |
+|-------------|----------------------------------|
+| Name        | Test Customer                   |
+| Email       | `customer@pupukin.test`         |
+| Password    | `password`                      |
+| Role        | `customer`                      |
+| NIK         | `3512345678901234`              |
+| Farm Area   | 2.5 hectares                    |
+| Address     | Dusun A, Desa Mangli, Jember    |
+
+### Owner (with transaction)
+
+Only the first owner is used in transactions.
+
+| Field         | Value                         |
+|---------------|-------------------------------|
+| Name          | Pemilik Toko 1                |
+| Email         | `owner1@pupukin.test`         |
+| Password      | `password`                    |
+| Role          | `owner`                       |
+| Shop Name     | Toko Pupuk Maju               |
+| Address       | Jl. Raya Jember No. 1, Jember |
+| License No.   | LIC00001                      |
+
+---
+
+## Seeded Test Data Summary
+
+| Entity         | Details                                                                              |
+|----------------|--------------------------------------------------------------------------------------|
+| **Users**      | 1 Admin, 10 Owners, 1 Customer (12 total)                                            |
+| **Fertilizers**| 4 Types: Urea, NPK, ZA (subsidized); Organik (non-subsidized)                        |
+| **Stocks**     | Each owner has 1000–5000 kg of each fertilizer                                       |
+| **Quota**      | 25 kg/month Urea for 2.5 ha (Test Customer); Updated based on actual transactions    |
+| **Transactions**| 5 total:<br>- Urea: 5kg, 7kg, 3kg (**completed**); 5kg (**pending**)<br>- NPK: 10kg (**completed**) |
+
+---
+
+
 ## Design
 
 ### Primary Colors
