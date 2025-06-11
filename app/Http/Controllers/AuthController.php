@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Fertilizer;
+use App\Models\Quota;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -113,6 +115,13 @@ class AuthController extends Controller
             'farm_area' => $request->farm_area,
             'address' => $request->address,
         ]);
+
+        Quota::create([
+            'customer_id' => $user->customer->id,
+            'max_quantity_kg' => $request->farm_area * 10, 
+            'remaining_kg' => $request->farm_area * 10,
+        ]);
+
     }
 
         return redirect('login')->with('success', 'Registration successful. You can now log in.');

@@ -100,7 +100,7 @@ class DatabaseSeeder extends Seeder
         $customer = Customer::create([
             'user_id' => $customerUser->id,
             'nik' => '3512345678901234',
-            'farm_area' => 2.5, // 2.5 hectares
+            'farm_area' => 5, // 2.5 hectares
             'address' => 'Dusun A, Desa Mangli, Jember',
         ]);
 
@@ -111,7 +111,7 @@ class DatabaseSeeder extends Seeder
         Quota::create([
             'customer_id' => $customer->id,
             'fertilizer_id' => $urea->id,
-            'max_kg_per_month' => 25,
+            'max_kg_per_month' => 50,
             'remaining_kg' => 10 // Will be updated below
         ]);
 
