@@ -22,18 +22,17 @@ class AuthController extends Controller
         if (auth()->attempt(['email' => $request->email, 'password' => $request->password])) {
             // Authentication passed, redirect based on role
             $user = auth()->user();
-            return redirect()->back()->withErrors(['Roles' => $user->role])->withInput();
 
-            // // Redirect based on role
-            // if ($user->role === 'admin') {
-            //     return redirect()->route('admin.dashboard')->with('success', 'Logged in successfully.');
-            // } else if ($user->role === 'owner') {
-            //     return redirect()->route('owner.dashboard')->with('success', 'Logged in successfully.');
-            // } else if ($user->role === 'customer') {
-            //     return redirect()->route('customer.dashboard')->with('success', 'Logged in successfully.');
-            // } else {
-            //     return redirect('/')->with('success', 'Logged in successfully.');
-            // }
+            // Redirect based on role
+            if ($user->role === 'admin') {
+                return redirect()->route('admin.dashboard')->with('success', 'Logged in successfully.');
+            } else if ($user->role === 'owner') {
+                return redirect()->route('owner.dashboard')->with('success', 'Logged in successfully.');
+            } else if ($user->role === 'customer') {
+                return redirect()->route('customer.dashboard')->with('success', 'Logged in successfully.');
+            } else {
+                return redirect('/')->with('success', 'Logged in successfully.');
+            }
         }
 
 
@@ -52,7 +51,7 @@ class AuthController extends Controller
         return view('auth.register-customer');
     }
 
-    public function showAdminRegisterForm()
+    public function showOwnerRegisterForm()
     {
         return view('auth.register-owner');
     }
@@ -115,7 +114,7 @@ class AuthController extends Controller
         ]);
     }
 
-        return redirect('auth.login')->with('success', 'Registration successful. You can now log in.');
+        return redirect('login')->with('success', 'Registration successful. You can now log in.');
 
     }
 

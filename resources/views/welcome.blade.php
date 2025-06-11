@@ -87,7 +87,6 @@
     <script>
         // Wait for DOM to be fully loaded
         document.addEventListener('DOMContentLoaded', function() {
-            // Sample shop data (replace with your actual data from backend)
             const shops = [{
                 id: 1,
                 name: "MasFana Fertilizer Center",
@@ -400,7 +399,7 @@
                     zIndexOffset: 1000
                 }).addTo(map);
 
-                userMarker.bindPopup("<b>Your Location</b>").openPopup();
+                userMarker.bindPopup("<b>Lokasi Anda</b>").openPopup();
 
                 // Calculate distances for each shop
                 shops.forEach(shop => {

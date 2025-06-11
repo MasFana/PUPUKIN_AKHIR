@@ -49,10 +49,16 @@
                         </button>
 
                         <!-- Links -->
-                        <div class="flex justify-center text-sm">
-                            <a class="text-info hover:underline" href="{{ route('register') }}">Belum punya akun? klik disini</a>
+                        <div class="flex flex-col justify-center text-sm items-center gap-2">
+                            <a>Belum punya akun?</a>
+                            <div class="fel-row flex justify-center items-center gap-2">
+                                <a class="ml-2 text-green-600 hover:underline" href="{{ route('register.owner') }}">Daftar
+                                    Owner</a>
+                                <a class="ml-2 text-green-600 hover:underline"
+                                    href="{{ route('register.customer') }}">Daftar
+                                    Customer</a>
+                            </div>
                         </div>
-                        
 
                         <!-- Divider -->
                         <div class="flex items-center text-sm text-gray-500">
