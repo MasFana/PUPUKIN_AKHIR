@@ -70,13 +70,15 @@ class CustomerOrderController extends Controller
             ])->withInput();
         }
 
+        $totalPrice = $fertilizer->price_per_kg * $request->quantity_kg;
+
         // Create transaction
         $transaction = Transaction::create([
             'customer_id' => $customer->id,
             'owner_id' => $request->owner_id,
             'fertilizer_id' => $fertilizer->id,
             'quantity_kg' => $request->quantity_kg,
-            'total_price' => $request->quantity_kg * str_replace(',', '.', $fertilizer->price_per_kg),
+            'total_price' => $totalPrice,
             'status' => 'pending',
         ]);
 

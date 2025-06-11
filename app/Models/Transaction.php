@@ -33,8 +33,9 @@ class Transaction extends Model
         return $this->belongsTo(Fertilizer::class, 'fertilizer_id');
     }
 
-    public function getTotalPriceAttribute($value)
+    public function getFormatedTotalPriceAttribute()
     {
-        return number_format($value, 2, ',', '.');
+        return number_format($this->attributes['total_price'], 0, ',', '.');
     }
+
 }

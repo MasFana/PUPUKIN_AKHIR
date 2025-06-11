@@ -27,8 +27,9 @@ class Fertilizer extends Model
     }
 
 
-    public function getPricePerKgAttribute($value)
+    public function getFormattedPricePerKgAttribute($value)
     {
-        return number_format($value, 2, ',', '.');
+        return number_format($value, 0, ',', '.');
     }
+
 }

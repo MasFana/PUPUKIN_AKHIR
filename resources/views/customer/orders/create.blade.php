@@ -7,13 +7,13 @@
     <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div class="max-w-4xl mx-auto">
             <div class="bg-white shadow-xl rounded-lg overflow-hidden">
-                <!-- Header -->
+                
                 <div class="bg-green-600 px-8 py-6">
                     <h1 class="text-2xl font-bold text-white">Buat Pesanan Baru</h1>
                     <p class="text-green-100">Isi formulir untuk memesan pupuk</p>
                 </div>
 
-                <!-- Content -->
+                
                 <div class="px-8 py-6">
                     <div class="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
                         <p class="font-medium text-blue-800">Kuota tersisa bulan ini: {{ number_format($remainingQuota, 0, ',', '.') }} kg</p>
@@ -24,7 +24,7 @@
                         @csrf
 
                         <div class="grid grid-cols-1 gap-6">
-                            <!-- Owner Selection -->
+                            
                             <div>
                                 <label for="owner_id" class="block text-sm font-medium text-gray-700">Toko Pupuk</label>
                                 <select id="owner_id" name="owner_id" required
@@ -41,7 +41,7 @@
                                 @enderror
                             </div>
 
-                            <!-- Fertilizer Selection -->
+                            
                             <div>
                                 <label for="fertilizer_id" class="block text-sm font-medium text-gray-700">Jenis Pupuk</label>
                                 <select id="fertilizer_id" name="fertilizer_id" required disabled
@@ -56,7 +56,7 @@
                                 @enderror
                             </div>
 
-                            <!-- Quantity Input -->
+                            
                             <div>
                                 <label for="quantity_kg" class="block text-sm font-medium text-gray-700">Jumlah (kg)</label>
                                 <input type="number" id="quantity_kg" name="quantity_kg" min="1" 
@@ -68,7 +68,7 @@
                                 @enderror
                             </div>
 
-                            <!-- Price Calculation -->
+                            
                             <div class="p-4 bg-gray-50 rounded-lg">
                                 <h3 class="text-sm font-medium text-gray-700">Perhitungan Harga</h3>
                                 <div class="mt-2">
@@ -77,7 +77,7 @@
                                 </div>
                             </div>
 
-                            <!-- Submit Button -->
+                            
                             <div class="flex justify-end">
                                 <a href="{{ route('customer.orders.index') }}" 
                                     class="mr-3 inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">

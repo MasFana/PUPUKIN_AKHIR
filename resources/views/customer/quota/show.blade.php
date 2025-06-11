@@ -7,15 +7,15 @@
     <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div class="max-w-4xl mx-auto">
             <div class="bg-white shadow-xl rounded-lg overflow-hidden">
-                <!-- Header -->
+                
                 <div class="bg-green-600 px-8 py-6">
                     <h1 class="text-2xl font-bold text-white">Kuota Pembelian Pupuk</h1>
                     <p class="text-green-100">Kuota bulanan Anda berdasarkan luas lahan</p>
                 </div>
 
-                <!-- Content -->
+                
                 <div class="px-8 py-6">
-                    <!-- Monthly Summary -->
+                    
                     <div class="mb-8 p-6 bg-gray-50 rounded-lg">
                         <h2 class="text-xl font-semibold text-gray-800 mb-4">Kuota Bulan Ini</h2>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -37,7 +37,7 @@
                         </p>
                     </div>
 
-                    <!-- Additional Info -->
+                    
                     <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
                         <h3 class="text-lg font-medium text-blue-800 mb-2">Informasi Kuota</h3>
                         <ul class="list-disc list-inside text-blue-700 space-y-1">

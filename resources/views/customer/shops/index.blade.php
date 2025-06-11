@@ -2,9 +2,9 @@
 @section('title', 'Dashboard')
 
 @push('head')
-    <!-- Leaflet CSS -->
+    
     <link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet" />
-    <!-- Range slider CSS -->
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css"/>
 
     <style>
@@ -42,12 +42,12 @@
         </header>
 
         <div class="h-full lg:h-3/4 grid grid-cols-1 gap-8 lg:grid-cols-3">
-            <!-- Map Section -->
+            
             <div class="min-h-96 overflow-hidden rounded-lg bg-white shadow-md lg:col-span-2">
                 <div id="map"></div>
             </div>
 
-            <!-- Shops List Section -->
+            
             <div class="overflow-hidden rounded-lg bg-white shadow-md flex flex-col">
                 <div class="filter-container p-6">
                     <h2 class="mb-2 text-xl font-semibold text-green-700">Filter Toko</h2>
@@ -62,13 +62,13 @@
                 <div class="overflow-y-auto p-6 pt-0 flex-grow">
                     <h2 class="mb-4 text-xl font-semibold text-green-700">Pupuk Terdekat</h2>
                     <div class="space-y-4" id="shops-list">
-                        <!-- Shops will be dynamically inserted here -->
+                        
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Current Location Info -->
+        
         <div class="mt-6 flex items-center rounded-lg bg-blue-50 p-4" id="location-info">
             <svg class="mr-2 h-6 w-6 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -78,11 +78,11 @@
         </div>
     </div>
 
-    <!-- Leaflet JS -->
+    
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <!-- jQuery (required for ion range slider) -->
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <!-- Ion Range Slider JS -->
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
 
     <script>

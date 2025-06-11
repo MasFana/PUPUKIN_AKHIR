@@ -6,7 +6,7 @@
     <div class="min-h-screen bg-gray-50">
         <div class="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
             <div class="overflow-hidden rounded-lg bg-white shadow-xl">
-                <!-- Profile Header -->
+                
                 <div class="bg-green-600 px-8 py-8">
                     <div class="flex items-center space-x-6">
                         <div class="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-full bg-white">
@@ -22,11 +22,11 @@
                     </div>
                 </div>
 
-                <!-- Profile Form -->
+                
                 <form class="px-10 py-10" action="{{ route('customer.profile.update') }}" method="POST">
                     @csrf
 
-                    <!-- Personal Information -->
+                    
                     <div class="mb-10">
                         <h2 class="mb-6 text-xl font-semibold text-gray-900">Informasi Pribadi</h2>
                         <div class="space-y-6">
@@ -54,7 +54,7 @@
                         </div>
                     </div>
 
-                    <!-- Password Update -->
+                    
                     <div class="mb-10">
                         <h2 class="mb-6 text-xl font-semibold text-gray-900">Ubah Password</h2>
                         <div class="space-y-6">
@@ -81,7 +81,7 @@
                         </div>
                     </div>
 
-                    <!-- Customer Information -->
+                    
                     <div class="mb-10">
                         <h2 class="mb-6 text-xl font-semibold text-gray-900">Informasi Pelanggan</h2>
                         <div class="space-y-6">
@@ -118,7 +118,7 @@
                         </div>
                     </div>
 
-                    <!-- Form Actions -->
+                    
                     <div class="mt-12 flex justify-between">
                         <a class="inline-flex items-center rounded-lg border border-gray-300 bg-white px-6 py-3 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
                             href="{{ route('customer.profile.show') }}">

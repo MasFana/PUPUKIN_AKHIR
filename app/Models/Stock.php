@@ -24,8 +24,8 @@ class Stock extends Model
         return $this->belongsTo(User::class, 'owner_id');
     }
 
-    public function getQuantityKgAttribute($value)
+    public function getFormattedQuantityKgAttribute()
     {
-        return number_format($value, 0, ',', '.');
+        return number_format($this->attributes['quantity_kg'], 0, ',', '.');
     }
 }
