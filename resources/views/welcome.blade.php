@@ -131,9 +131,9 @@
     </head>
 
     <body class="min-h-screen border-t bg-white">
+        <x-navbar-guest />
         {{-- <div class="fixed top-0 left-0 right-0 z-50">
         </div> --}}
-            <x-navbar-guest />
         <!-- Hero Section -->
         <section class="hero-gradient relative flex min-h-screen items-center overflow-hidden">
             <div class="leaf-container" id="leaves-container">
@@ -547,7 +547,7 @@
                         },
                         {
                             value: 0.8 + Math.random() * 0.2,
-                            duration: 2000
+                            duration: 3000
                         }, // Random peak opacity
                         {
                             value: 0,

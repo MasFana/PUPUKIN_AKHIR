@@ -2,29 +2,33 @@
 @section('title', 'Dashboard')
 
 @push('head')
-    
     <link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet" />
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css"/>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css" rel="stylesheet" />
 
     <style>
         #map {
             width: 100%;
             height: 100%;
         }
+
         .shop-card:hover {
             transform: translateY(-2px);
         }
+
         .irs--modern .irs-bar {
             background: #4ade80;
         }
+
         .irs--modern .irs-handle {
             border: 3px solid #4ade80;
         }
+
         .range-slider-container {
             padding: 0 15px;
             margin-bottom: 20px;
         }
+
         .range-value {
             font-weight: bold;
             color: #4ade80;
@@ -35,54 +39,54 @@
 
 @section('content')
 
-    <main class="container mx-auto px-4 py-8 h-screen">
+    <main class="container mx-auto h-screen px-4 py-8">
         <header class="mb-8">
             <h1 class="text-3xl font-bold text-green-800">Toko Pupuk Disekitar Anda</h1>
             <p class="text-gray-600">Temukan toko pupuk bersubsidi di daerah Anda</p>
         </header>
 
-        <div class="h-full lg:h-3/4 grid grid-cols-1 gap-8 lg:grid-cols-3">
-            
+        <div class="grid h-full grid-cols-1 gap-8 lg:h-3/4 lg:grid-cols-3">
+
             <div class="min-h-96 overflow-hidden rounded-lg bg-white shadow-md lg:col-span-2">
                 <div id="map"></div>
             </div>
 
-            
-            <div class="overflow-hidden rounded-lg bg-white shadow-md flex flex-col">
+            <div class="flex flex-col overflow-hidden rounded-lg bg-white shadow-md">
                 <div class="filter-container p-6">
                     <h2 class="mb-2 text-xl font-semibold text-green-700">Filter Toko</h2>
                     <div class="range-slider-container">
-                        <label for="range-slider" class="block text-sm font-medium text-gray-700">
+                        <label class="block text-sm font-medium text-gray-700" for="range-slider">
                             Jarak Maksimum: <span class="range-value">5</span> km
                         </label>
-                        <input type="text" id="range-slider" name="range-slider" value="5" />
+                        <input id="range-slider" name="range-slider" type="text" value="5" />
                     </div>
                 </div>
-                
-                <div class="overflow-y-auto p-6 pt-0 flex-grow">
+
+                <div class="flex-grow overflow-y-auto p-6 pt-0">
                     <h2 class="mb-4 text-xl font-semibold text-green-700">Pupuk Terdekat</h2>
                     <div class="space-y-4" id="shops-list">
-                        
+
                     </div>
                 </div>
             </div>
         </div>
 
-        
         <div class="mt-6 flex items-center rounded-lg bg-blue-50 p-4" id="location-info">
-            <svg class="mr-2 h-6 w-6 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            <svg class="mr-2 h-6 w-6 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
             <span class="text-blue-700" id="location-text">Detecting your location...</span>
         </div>
     </main>
 
-    
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
 
     <script>
@@ -149,10 +153,10 @@
             function filterShops() {
                 return shops.filter(shop => {
                     // Check if shop is within max distance
-                    const withinDistance = userLat && userLng 
-                        ? shop.distance <= maxDistance 
-                        : true; // Show all if location not available
-                    
+                    const withinDistance = userLat && userLng ?
+                        shop.distance <= maxDistance :
+                        true; // Show all if location not available
+
                     // Check if shop should be shown based on open status
 
                     return withinDistance;
@@ -169,47 +173,47 @@
             }
 
             // Function to adjust map zoom based on filtered shops
-    function adjustMapZoom(filteredShops) {
-        // If we have user location and filtered shops
-        if (userLat && userLng && filteredShops.length > 0) {
-            // Create bounds that include user location
-            const bounds = L.latLngBounds([
-                [userLat, userLng]
-            ]);
-            
-            // Extend bounds to include all filtered shops
-            filteredShops.forEach(shop => {
-                bounds.extend([shop.lat, shop.lng]);
-            });
-            
-            // Fit the map to the bounds with padding
-            if (bounds.isValid()) {
-                map.fitBounds(bounds, {
-                    padding: [50, 50], // Add 50px padding on all sides
-                    maxZoom: 16 // Prevent zooming too close
-                });
-                
-                // If the zoom level is too far out, set a reasonable zoom
-                if (map.getZoom() > 14) {
-                    map.setZoom(14);
+            function adjustMapZoom(filteredShops) {
+                // If we have user location and filtered shops
+                if (userLat && userLng && filteredShops.length > 0) {
+                    // Create bounds that include user location
+                    const bounds = L.latLngBounds([
+                        [userLat, userLng]
+                    ]);
+
+                    // Extend bounds to include all filtered shops
+                    filteredShops.forEach(shop => {
+                        bounds.extend([shop.lat, shop.lng]);
+                    });
+
+                    // Fit the map to the bounds with padding
+                    if (bounds.isValid()) {
+                        map.fitBounds(bounds, {
+                            padding: [50, 50], // Add 50px padding on all sides
+                            maxZoom: 16 // Prevent zooming too close
+                        });
+
+                        // If the zoom level is too far out, set a reasonable zoom
+                        if (map.getZoom() > 14) {
+                            map.setZoom(14);
+                        }
+                    }
+                } else if (filteredShops.length > 0) {
+                    // If no user location but we have filtered shops
+                    const bounds = L.latLngBounds([]);
+                    filteredShops.forEach(shop => {
+                        bounds.extend([shop.lat, shop.lng]);
+                    });
+
+                    if (bounds.isValid()) {
+                        map.fitBounds(bounds, {
+                            padding: [50, 50],
+                            maxZoom: 14
+                        });
+                    }
                 }
+                // If no shops match the filter, we don't adjust the zoom
             }
-        } else if (filteredShops.length > 0) {
-            // If no user location but we have filtered shops
-            const bounds = L.latLngBounds([]);
-            filteredShops.forEach(shop => {
-                bounds.extend([shop.lat, shop.lng]);
-            });
-            
-            if (bounds.isValid()) {
-                map.fitBounds(bounds, {
-                    padding: [50, 50],
-                    maxZoom: 14
-                });
-            }
-        }
-        // If no shops match the filter, we don't adjust the zoom
-    }
 
             // Function to render shops list
             function renderShopsList(shopsToRender = shops) {
@@ -239,25 +243,33 @@
                     }`;
 
                     shopElement.innerHTML = `
-                        <div class="flex justify-between items-start">
-                            <h3 class="font-semibold text-lg text-green-800">${shop.name}</h3>
-                            <span class="px-2 py-1 text-xs rounded-full ${
-                                shop.status.includes('Buka') ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
-                            }">${shop.status}</span>
-                        </div>
-                        <p class="text-gray-600 text-sm mt-1">${shop.address}</p>
-                        <div class="mt-2 flex items-center text-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                            </svg>
-                            <span class="text-gray-700">${shop.distance ? `${shop.distance.toFixed(1)} km` : 'Distance calculating...'}</span>
-                        </div>
-                        <div class="mt-2">
-                            <span class="text-xs font-medium text-gray-500">Tersedia:</span>
-                            <span class="text-sm text-gray-700 ml-1">${shop.stock}</span>
-                        </div>
-                    `;
+    <div class="p-4 border border-gray-200 rounded-lg hover:shadow transition duration-150 ease-in-out">
+        <div class="flex justify-between items-start">
+            <h3 class="font-semibold text-lg text-green-800">${shop.name}</h3>
+            <span class="px-2 py-1 text-xs rounded-full ${
+                shop.status.includes('Buka') ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+            }">${shop.status}</span>
+        </div>
+        <p class="text-gray-600 text-sm mt-1">${shop.address}</p>
+        <div class="mt-2 flex items-center text-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <span class="text-gray-700">${shop.distance ? `${shop.distance.toFixed(1)} km` : 'Distance calculating...'}</span>
+        </div>
+        <div class="mt-2">
+            <span class="text-xs font-medium text-gray-500">Tersedia:</span>
+            <span class="text-sm text-gray-700 ml-1">${shop.stock}</span>
+        </div>
+        <div class="mt-4 text-right">
+            <a href="/orders/create?t=${shop.id}" class="inline-block bg-green-600 text-white text-sm px-4 py-2 rounded hover:bg-green-700 transition">
+                Belanja
+            </a>
+        </div>
+    </div>
+`;
+
 
                     // Add click event to focus on the shop on the map
                     shopElement.addEventListener('click', () => {
@@ -305,7 +317,7 @@
                     const shopId = marker.options.shopId;
                     const shop = shops.find(s => s.id === shopId);
                     const shouldShow = filteredShops.some(s => s.id === shopId);
-                    
+
                     if (shouldShow) {
                         if (!map.hasLayer(marker)) {
                             marker.addTo(map);
@@ -331,7 +343,7 @@
                 if (userMarker) {
                     map.removeLayer(userMarker);
                 }
-                
+
                 userMarker = L.marker([userLat, userLng], {
                     icon: L.divIcon({
                         className: 'user-location-marker',
@@ -379,10 +391,10 @@
             // Function to handle geolocation error
             function handleGeolocationError(error) {
                 console.error("Error getting user location:", error);
-                document.getElementById('location-text').textContent = 
-                    error.code === error.PERMISSION_DENIED 
-                    ? "Location access denied. Showing all shops." 
-                    : "Couldn't determine your location. Showing all shops.";
+                document.getElementById('location-text').textContent =
+                    error.code === error.PERMISSION_DENIED ?
+                    "Location access denied. Showing all shops." :
+                    "Couldn't determine your location. Showing all shops.";
 
                 // Create bounds that include all shops
                 const bounds = L.latLngBounds([]);
@@ -423,7 +435,7 @@
                 );
             } else {
                 console.log("Geolocation is not supported by this browser.");
-                document.getElementById('location-text').textContent = 
+                document.getElementById('location-text').textContent =
                     "Geolocation not supported. Showing all shops.";
 
                 // Create bounds that include all shops
