@@ -1,4 +1,4 @@
-<nav class="bg-white shadow-sm" x-data="{ open: false }">
+<nav class="bg-white shadow-md" x-data="{ open: false }">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex h-16 justify-between">
             <!-- Logo/Brand -->
@@ -7,13 +7,13 @@
                     <svg class="h-8 w-8 text-green-600" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 2L4 7v10l8 5 8-5V7l-8-5zm0 15l-6-3.5V9l6 3.5 6-3.5v4.5L12 17z" />
                     </svg>
-                    <span class="ml-2 text-xl font-bold text-green-800">PUP PUK in</span>
+                    <span class="ml-2 text-xl font-bold text-green-800">PUPUKIN</span>
                 </a>
             </div>
 
             <!-- Navigation Links -->
             <div class="hidden md:flex items-center mx-auto space-x-8">
-                <a class="{{ request()->routeIs('landing') ? 'text-green-600 border-b-2 border-green-600' : 'text-gray-700 hover:text-green-600' }} px-1 py-2 text-sm font-medium"
+                {{-- <a class="{{ request()->routeIs('landing') ? 'text-green-600 border-b-2 border-green-600' : 'text-gray-700 hover:text-green-600' }} px-1 py-2 text-sm font-medium"
                     href="{{ route('landing') }}">
                     Home
                 </a>
@@ -26,7 +26,7 @@
                 <a class="{{ request()->routeIs('register.customer') ? 'text-green-600 border-b-2 border-green-600' : 'text-gray-700 hover:text-green-600' }} px-1 py-2 text-sm font-medium"
                     href="{{ route('register.customer') }}">
                     Daftar Pelanggan
-                </a>
+                </a> --}}
             </div>
             <!-- Desktop Navigation -->
             <div class="hidden items-center space-x-4 md:flex">

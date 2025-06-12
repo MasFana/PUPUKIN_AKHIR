@@ -3,7 +3,7 @@
 @section('title', 'Buat Pesanan Baru')
 
 @section('content')
-<div class="bg-gray-50 min-h-screen">
+<main class="min-h-screen">
     <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div class="max-w-4xl mx-auto">
             <div class="bg-white shadow-xl rounded-lg overflow-hidden">
@@ -94,7 +94,7 @@
             </div>
         </div>
     </div>
-</div>
+</main>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

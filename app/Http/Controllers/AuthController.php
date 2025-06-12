@@ -11,6 +11,22 @@ class AuthController extends Controller
 {
     public function showLoginForm()
     {
+        
+            if (auth()->check()) {
+                // If the user is already logged in, redirect based on role
+                $user = auth()->user();
+    
+                // Redirect based on role
+                if ($user->role === 'admin') {
+                    return redirect()->route('admin.dashboard')->with('success', 'You are already logged in as an admin.');
+                } else if ($user->role === 'owner') {
+                    return redirect()->route('owner.dashboard')->with('success', 'You are already logged in as an owner.');
+                } else if ($user->role === 'customer') {
+                    return redirect()->route('customer.dashboard')->with('success', 'You are already logged in as a customer.');
+                } else {
+                    return redirect('/')->with('success', 'You are already logged in.');
+                }
+            }
         return view('auth.login');
     }
 

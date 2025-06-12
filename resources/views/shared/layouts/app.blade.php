@@ -32,7 +32,9 @@
                 <x-navbar/>
             @endif
         @else
-            <x-navbar-guest/>
+            @if (!Request::is('login*') && !Request::is('register*'))
+                <x-navbar-guest/>
+            @endif
 
         @endif
         

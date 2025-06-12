@@ -53,7 +53,7 @@
                         <!-- Links -->
                         <div class="flex flex-col justify-center text-sm items-center gap-2">
                             <a>Belum punya akun?</a>
-                            <div class="fel-row flex justify-center items-center gap-2">
+                            <div class="fel-row flex justify-center items-center gap-4">
                                 <a class="ml-2 text-green-600 hover:underline" href="{{ route('register.owner') }}">Daftar
                                     Owner</a>
                                 <a class="ml-2 text-green-600 hover:underline"

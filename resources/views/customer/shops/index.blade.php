@@ -35,7 +35,7 @@
 
 @section('content')
 
-    <div class="container mx-auto px-4 py-8 h-screen">
+    <main class="container mx-auto px-4 py-8 h-screen">
         <header class="mb-8">
             <h1 class="text-3xl font-bold text-green-800">Toko Pupuk Disekitar Anda</h1>
             <p class="text-gray-600">Temukan toko pupuk bersubsidi di daerah Anda</p>
@@ -76,7 +76,7 @@
             </svg>
             <span class="text-blue-700" id="location-text">Detecting your location...</span>
         </div>
-    </div>
+    </ma>
 
     
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>

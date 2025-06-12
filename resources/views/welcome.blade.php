@@ -1,510 +1,653 @@
-@extends('shared.layouts.app')
-@section('title', 'Dashboard')
+<!DOCTYPE html>
+<html lang="id">
 
-@push('head')
-    
-    <link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet" />
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css"/>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>PUP PUK in - Distribusi Pupuk Bersubsidi</title>
+        <meta name="description"
+            content="Sistem terpadu untuk distribusi pupuk bersubsidi yang lebih mudah dan terkontrol">
 
-    <style>
-        #map {
-            width: 100%;
-            height: 100%;
-        }
-        .shop-card:hover {
-            transform: translateY(-2px);
-        }
-        .irs--modern .irs-bar {
-            background: #4ade80;
-        }
-        .irs--modern .irs-handle {
-            border: 3px solid #4ade80;
-        }
-        .range-slider-container {
-            padding: 0 15px;
-            margin-bottom: 20px;
-        }
-        .range-value {
-            font-weight: bold;
-            color: #4ade80;
-            margin-left: 5px;
-        }
-    </style>
-@endpush
+        <!-- Tailwind CSS -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="//unpkg.com/alpinejs" defer></script>
 
-@section('content')
+        <!-- Anime.js -->
+        <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
 
-    <div class="container mx-auto px-4 py-8 h-screen">
-        <header class="mb-8">
-            <h1 class="text-3xl font-bold text-green-800">Toko Pupuk Disekitar Anda</h1>
-            <p class="text-gray-600">Temukan toko pupuk bersubsidi di daerah Anda</p>
-        </header>
+        <style>
+            /* Custom CSS */
+            body {
+                font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            }
 
-        <div class="h-full lg:h-3/4 grid grid-cols-1 gap-8 lg:grid-cols-3">
-            
-            <div class="min-h-96 overflow-hidden rounded-lg bg-white shadow-md lg:col-span-2">
-                <div id="map"></div>
-            </div>
+            /* Animasi hover untuk tombol CTA */
+            .cta-button:hover {
+                box-shadow: 0 10px 25px -5px rgba(22, 101, 52, 0.4);
+            }
 
-            
-            <div class="overflow-hidden rounded-lg bg-white shadow-md flex flex-col">
-                <div class="filter-container p-6">
-                    <h2 class="mb-2 text-xl font-semibold text-green-700">Filter Toko</h2>
-                    <div class="range-slider-container">
-                        <label for="range-slider" class="block text-sm font-medium text-gray-700">
-                            Jarak Maksimum: <span class="range-value">5</span> km
-                        </label>
-                        <input type="text" id="range-slider" name="range-slider" value="5" />
-                    </div>
-                </div>
-                
-                <div class="overflow-y-auto p-6 pt-0 flex-grow">
-                    <h2 class="mb-4 text-xl font-semibold text-green-700">Pupuk Terdekat</h2>
-                    <div class="space-y-4" id="shops-list">
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
+            /* Efek parallax untuk section statistik */
+            .parallax {
+                background-attachment: fixed;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+            }
 
-        
-        <div class="mt-6 flex items-center rounded-lg bg-blue-50 p-4" id="location-info">
-            <svg class="mr-2 h-6 w-6 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-            <span class="text-blue-700" id="location-text">Detecting your location...</span>
-        </div>
-    </div>
+            /* Smooth scrolling */
+            html {
+                scroll-behavior: smooth;
+            }
 
-    
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
+            /* Loading animation */
+            .loading {
+                opacity: 0;
+                transform: translateY(20px);
+            }
 
-    <script>
-        // Wait for DOM to be fully loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            const shops = [{
-                id: 1,
-                name: "MasFana Fertilizer Center",
-                lat: -8.165833,
-                lng: 113.716944,
-                address: "Jl. Raya Jember, Kec. Kalisat, Kab. Jember",
-                license: "LIC12345",
-                distance: null,
-                stock: "Urea, NPK, ZA",
-                status: "Open",
-                open: true
-            },
-            {
-                id: 2,
-                name: "Tani Makmur Fertilizer",
-                lat: -8.168000,
-                lng: 113.720000,
-                address: "Jl. Kalisat No. 12, Kab. Jember",
-                license: "LIC67890",
-                distance: null,
-                stock: "Urea, NPK",
-                status: "Open",
-                open: true
-            },
-            {
-                id: 3,
-                name: "Subur Jaya Fertilizer",
-                lat: -8.163000,
-                lng: 113.715000,
-                address: "Jl. Mangga No. 45, Kab. Jember",
-                license: "LIC54321",
-                distance: null,
-                stock: "Urea, ZA",
-                status: "Closed (Opens at 8AM)",
-                open: false
-            },
-            {
-                id: 4,
-                name: "Pupuk Sejahtera",
-                lat: -8.180000,
-                lng: 113.730000,
-                address: "Jl. Kenanga No. 78, Kab. Jember",
-                license: "LIC98765",
-                distance: null,
-                stock: "Urea, NPK, ZA, Organik",
-                status: "Open",
-                open: true
-            },
-            {
-                id: 5,
-                name: "Toko Tani Maju",
-                lat: -8.150000,
-                lng: 113.700000,
-                address: "Jl. Anggrek No. 34, Kab. Jember",
-                license: "LIC45678",
-                distance: null,
-                stock: "Urea, NPK",
-                status: "Closed (Opens tomorrow)",
-                open: false
-            }];
+            /* Leaf animation container */
+            .leaf-container {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+                pointer-events: none;
+            }
 
-            // Initialize the map with a default view
-            const map = L.map('map', {
-                zoomControl: true,
-                preferCanvas: true
-            }).setView([-8.165833, 113.716944], 14);
+            /* Custom gradient */
+            .hero-gradient {
+                background: linear-gradient(135deg, 
+                    rgba(240, 253, 244, 0.75) 0%, 
+                    rgba(220, 252, 231, 0.75) 50%, 
+                    rgba(187, 247, 208, 0.75) 100%),
+                    url('/landing.png');
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+            }
 
-            // Add OpenStreetMap tiles with proper error handling
-            const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-                maxZoom: 19,
-                minZoom: 3
-            }).addTo(map);
+            /* Feature card hover effect */
+            .feature-card {
+                transition: all 0.3s ease;
+            }
 
-            // Variables to store user location and filter settings
-            let userLat = null;
-            let userLng = null;
-            let userMarker = null;
-            let markers = [];
-            let maxDistance = 5; // Default max distance in km
+            .feature-card:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            }
 
-            // Initialize range slider
-            $("#range-slider").ionRangeSlider({
-                type: "single",
-                min: 1,
-                max: 20,
-                from: maxDistance,
-                step: 1,
-                grid: true,
-                grid_num: 4,
-                skin: "modern",
-                onChange: function(data) {
-                    maxDistance = data.from;
-                    $(".range-value").text(maxDistance);
-                    filterAndRenderShops();
+            /* Stats section background */
+            .stats-bg {
+                background-image:
+                    linear-gradient(rgba(20, 83, 45, 0.8), rgba(20, 83, 45, 0.8)),
+                    url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23166534" width="1200" height="600"/><path fill="%23059669" d="M0 400c100-50 200-100 300-80s200 60 300 40 200-40 300-20 200 40 300 20v240H0z"/></svg>');
+                background-size: cover;
+                background-position: center;
+            }
+
+            /* Hero title word animation */
+            .hero-title {
+                line-height: 1.2;
+            }
+
+            .word {
+                display: inline-block;
+                margin-right: 0.3em;
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            .word:last-child {
+                margin-right: 0;
+            }
+
+            /* Responsive text */
+            @media (max-width: 640px) {
+                .hero-title {
+                    font-size: 2rem;
+                    line-height: 1.1;
                 }
-            });
 
-
-            // Function to calculate distance between two coordinates in km
-            function calculateDistance(lat1, lon1, lat2, lon2) {
-                const R = 6371; // Radius of the earth in km
-                const dLat = deg2rad(lat2 - lat1);
-                const dLon = deg2rad(lon2 - lon1);
-                const a =
-                    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-                    Math.sin(dLon / 2) * Math.sin(dLon / 2);
-                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-                return R * c; // Distance in km
-            }
-
-            function deg2rad(deg) {
-                return deg * (Math.PI / 180);
-            }
-
-            // Function to filter shops based on distance and open status
-            function filterShops() {
-                return shops.filter(shop => {
-                    // Check if shop is within max distance
-                    const withinDistance = userLat && userLng 
-                        ? shop.distance <= maxDistance 
-                        : true; // Show all if location not available
-                    
-                    // Check if shop should be shown based on open status
-
-                    return withinDistance;
-                });
-            }
-
-            // Function to filter and render shops
-            function filterAndRenderShops() {
-                const filteredShops = filterShops();
-                renderShopsList(filteredShops);
-                updateShopMarkers(filteredShops);
-                adjustMapZoom(filteredShops); // Add this line to adjust zoom
-
-            }
-
-            // Function to adjust map zoom based on filtered shops
-    function adjustMapZoom(filteredShops) {
-        // If we have user location and filtered shops
-        if (userLat && userLng && filteredShops.length > 0) {
-            // Create bounds that include user location
-            const bounds = L.latLngBounds([
-                [userLat, userLng]
-            ]);
-            
-            // Extend bounds to include all filtered shops
-            filteredShops.forEach(shop => {
-                bounds.extend([shop.lat, shop.lng]);
-            });
-            
-            // Fit the map to the bounds with padding
-            if (bounds.isValid()) {
-                map.fitBounds(bounds, {
-                    padding: [50, 50], // Add 50px padding on all sides
-                    maxZoom: 16 // Prevent zooming too close
-                });
-                
-                // If the zoom level is too far out, set a reasonable zoom
-                if (map.getZoom() > 14) {
-                    map.setZoom(14);
+                .word {
+                    margin-right: 0.2em;
                 }
             }
-        } else if (filteredShops.length > 0) {
-            // If no user location but we have filtered shops
-            const bounds = L.latLngBounds([]);
-            filteredShops.forEach(shop => {
-                bounds.extend([shop.lat, shop.lng]);
-            });
-            
-            if (bounds.isValid()) {
-                map.fitBounds(bounds, {
-                    padding: [50, 50],
-                    maxZoom: 14
-                });
+
+            @media (max-width: 480px) {
+                .hero-title {
+                    font-size: 1.75rem;
+                }
             }
-        }
-        // If no shops match the filter, we don't adjust the zoom
-    }
 
-            // Function to render shops list
-            function renderShopsList(shopsToRender = shops) {
-                const shopsList = document.getElementById('shops-list');
-                shopsList.innerHTML = '';
+            /* Ensure proper text wrapping */
+            .hero-title-container {
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                hyphens: auto;
+            }
+        </style>
+    </head>
 
-                // Sort shops by distance (if available)
-                const sortedShops = [...shopsToRender].sort((a, b) => {
-                    if (a.distance === null) return 1;
-                    if (b.distance === null) return -1;
-                    return a.distance - b.distance;
-                });
+    <body class="min-h-screen border-t bg-white">
+        {{-- <div class="fixed top-0 left-0 right-0 z-50">
+        </div> --}}
+            <x-navbar-guest />
+        <!-- Hero Section -->
+        <section class="hero-gradient relative flex min-h-screen items-center overflow-hidden">
+            <div class="leaf-container" id="leaves-container">
+                <!-- Container untuk animasi daun jatuh -->
+            </div>
 
-                if (sortedShops.length === 0) {
-                    shopsList.innerHTML = `
-                        <div class="text-center py-4 text-gray-500">
-                            Tidak ada toko yang ditemukan dengan filter saat ini.
+            <div class="container relative z-10 mx-auto px-4 py-16">
+                <div class="mx-auto max-w-4xl text-center">
+                    <div class="hero-title-container">
+                        <h1 class="hero-title loading mb-6 text-4xl font-bold text-green-800 md:text-5xl lg:text-6xl"
+                            id="hero-title">
+                            <!-- Text akan diisi oleh JavaScript -->
+                        </h1>
+                    </div>
+
+                    <p class="loading mb-10 text-xl text-green-700 opacity-90 md:text-2xl">
+                        Sistem terpadu untuk memastikan pupuk bersubsidi sampai ke tangan petani yang tepat dengan
+                        proses yang transparan dan efisien
+                    </p>
+
+                    <div class="mb-12 flex flex-col justify-center gap-4 sm:flex-row">
+                        <a href="{{ route('register.customer') }}"
+                            class="cta-button loading flex transform items-center justify-center rounded-lg bg-green-600 px-8 py-3 font-bold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-green-700 hover:shadow-xl">
+                            Daftar Petani
+                            <svg class="ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </a>
+                        <a href="{{ route('register.owner') }}"
+                            class="cta-button loading flex transform items-center justify-center rounded-lg bg-amber-600 px-8 py-3 font-bold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-amber-700 hover:shadow-xl">
+                            Daftar Toko
+                            <svg class="ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </a>
+                    </div>
+
+                    <div class="loading group relative mt-8 h-64 overflow-hidden rounded-xl md:h-80 lg:h-96">
+                        <img class="h-full w-full transform object-cover object-top object-rig transition-transform duration-700 ease-out group-hover:scale-110 shadow-md"
+                            src="/petani.png" alt="Pupuk Bersubsidi">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-green-900/90 via-green-800/50 to-transparent transition-opacity duration-300 group-hover:opacity-75">
                         </div>
-                    `;
+                        <div class="absolute inset-0 flex flex-col items-center justify-center p-6">
+                            <h2
+                                class="mb-3 transform text-center font-heading text-xl font-extrabold leading-tight tracking-tight text-white transition-all duration-300 group-hover:-translate-y-2 md:text-3xl lg:text-4xl">
+                                Pupuk Bersubsidi untuk Masa Depan Pertanian Indonesia
+                            </h2>
+                            <p class="max-w-lg text-center text-sm font-medium text-white/90 md:text-base">
+                                Mendukung ketahanan pangan nasional melalui distribusi pupuk yang tepat sasaran
+                            </p>
+                            <div
+                                class="mt-4 h-0.5 w-24 scale-x-0 transform rounded bg-green-400 opacity-0 transition-all duration-500 group-hover:scale-x-100 group-hover:opacity-100">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="bg-white py-16 md:py-24" id="features-section">
+            <div class="container mx-auto px-4">
+                <h2 class="mb-16 text-center text-3xl font-bold text-green-800 md:text-4xl">
+                    Fitur Unggulan Kami
+                </h2>
+
+                <div class="grid gap-8 md:grid-cols-3">
+                    <div class="feature-card rounded-xl border border-green-100 bg-white p-6 shadow-lg">
+                        <div class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
+                            <svg class="h-8 w-8 text-green-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                <path d="m9 12 2 2 4-4"></path>
+                            </svg>
+                        </div>
+                        <h3 class="mb-3 text-center text-xl font-bold text-green-800">Verifikasi Terpadu</h3>
+                        <p class="text-center text-gray-600">
+                            Sistem verifikasi multi-level untuk memastikan pupuk bersubsidi sampai ke petani yang berhak
+                            dengan tepat sasaran
+                        </p>
+                    </div>
+
+                    <div class="feature-card rounded-xl border border-green-100 bg-white p-6 shadow-lg">
+                        <div class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
+                            <svg class="h-8 w-8 text-green-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                            </svg>
+                        </div>
+                        <h3 class="mb-3 text-center text-xl font-bold text-green-800">Monitoring Real-time</h3>
+                        <p class="text-center text-gray-600">
+                            Pantau distribusi pupuk secara real-time dari pabrik hingga petani dengan dashboard
+                            interaktif dan laporan terperinci
+                        </p>
+                    </div>
+
+                    <div class="feature-card rounded-xl border border-green-100 bg-white p-6 shadow-lg">
+                        <div class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
+                            <svg class="h-8 w-8 text-green-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path
+                                    d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z">
+                                </path>
+                                <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path>
+                            </svg>
+                        </div>
+                        <h3 class="mb-3 text-center text-xl font-bold text-green-800">Edukasi Pertanian</h3>
+                        <p class="text-center text-gray-600">
+                            Akses informasi dan panduan penggunaan pupuk yang tepat untuk meningkatkan hasil panen dan
+                            kualitas tanaman
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Statistics Section -->
+        <section class="stats-bg py-16 md:py-24" id="stats-section">
+            <div class="container relative z-10 mx-auto px-4">
+                <h2 class="mb-16 text-center text-3xl font-bold text-white md:text-4xl">
+                    Dampak Kami
+                </h2>
+
+                <div class="grid gap-8 text-center md:grid-cols-3">
+                    <div class="p-6">
+                        <div class="stat-number mb-2 text-5xl font-bold text-white md:text-6xl" data-value="25000">0
+                        </div>
+                        <p class="text-xl text-green-200">Petani Terdaftar</p>
+                    </div>
+
+                    <div class="p-6">
+                        <div class="stat-number mb-2 text-5xl font-bold text-white md:text-6xl" data-value="1500">0
+                        </div>
+                        <p class="text-xl text-green-200">Toko Resmi</p>
+                    </div>
+
+                    <div class="p-6">
+                        <div class="stat-number mb-2 text-5xl font-bold text-white md:text-6xl" data-value="50000">0
+                        </div>
+                        <p class="text-xl text-green-200">Ton Pupuk Tersalurkan</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="bg-white py-16 md:py-24" id="cta-section">
+            <div class="container mx-auto px-4">
+                <div class="cta-section mx-auto max-w-3xl text-center">
+                    <h2 class="mb-6 text-3xl font-bold text-green-800 md:text-4xl">
+                        Bergabunglah dengan Ekosistem PUP PUK in
+                    </h2>
+
+                    <p class="mb-10 text-xl text-gray-600">
+                        Jadilah bagian dari revolusi distribusi pupuk bersubsidi yang lebih efisien, transparan, dan
+                        tepat sasaran
+                    </p>
+
+                    <button
+                        class="final-cta transform rounded-lg bg-green-600 px-10 py-4 text-xl font-bold text-white shadow-lg transition-all duration-300 hover:scale-110 hover:bg-green-700 hover:shadow-xl">
+                        Mulai Sekarang
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-green-900 py-8 text-white">
+            <div class="container mx-auto px-4 text-center">
+                <p>&copy; <span id="current-year"></span> Pupukin App. All rights reserved.</p>
+            </div>
+        </footer>
+
+        <script>
+            // Set current year
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+
+            // Wait for DOM to be fully loaded
+            document.addEventListener('DOMContentLoaded', function() {
+                // Check if anime.js is loaded
+                if (typeof anime === 'undefined') {
+                    console.error('Anime.js not loaded');
+                    // Fallback: remove loading class to show content
+                    document.querySelectorAll('.loading').forEach(el => {
+                        el.classList.remove('loading');
+                        el.style.opacity = '1';
+                        el.style.transform = 'translateY(0)';
+                    });
                     return;
                 }
 
-                sortedShops.forEach(shop => {
-                    const shopElement = document.createElement('div');
-                    shopElement.className = `shop-card p-4 border rounded-lg transition-all duration-200 ${
-                        shop.status.includes('Open') ? 'border-green-200 bg-green-50' : 'border-gray-200 bg-gray-50'
-                    }`;
+                // Initialize animations
+                initializeAnimations();
+            });
 
-                    shopElement.innerHTML = `
-                        <div class="flex justify-between items-start">
-                            <h3 class="font-semibold text-lg text-green-800">${shop.name}</h3>
-                            <span class="px-2 py-1 text-xs rounded-full ${
-                                shop.status.includes('Open') ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
-                            }">${shop.status}</span>
-                        </div>
-                        <p class="text-gray-600 text-sm mt-1">${shop.address}</p>
-                        <div class="mt-2 flex items-center text-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                            </svg>
-                            <span class="text-gray-700">${shop.distance ? `${shop.distance.toFixed(1)} km` : 'Distance calculating...'}</span>
-                        </div>
-                        <div class="mt-2">
-                            <span class="text-xs font-medium text-gray-500">Available:</span>
-                            <span class="text-sm text-gray-700 ml-1">${shop.stock}</span>
-                        </div>
-                    `;
+            function initializeAnimations() {
+                // Setup hero title with proper word wrapping
+                setupHeroTitle();
 
-                    // Add click event to focus on the shop on the map
-                    shopElement.addEventListener('click', () => {
-                        map.setView([shop.lat, shop.lng], 16);
-                        const marker = markers.find(m => m.options.shopId === shop.id);
-                        if (marker) marker.openPopup();
+                // Remove loading class from hero elements
+                setTimeout(() => {
+                    document.querySelectorAll('.loading').forEach(el => {
+                        el.classList.remove('loading');
                     });
+                }, 500);
 
-                    shopsList.appendChild(shopElement);
+                // Animasi tombol CTA
+                anime({
+                    targets: '.cta-button',
+                    scale: [0.9, 1],
+                    opacity: [0, 1],
+                    easing: "easeOutElastic(1, .6)",
+                    duration: 800,
+                    delay: function(el, i) {
+                        return 1500 + (i * 150);
+                    }
+                });
+
+                // Animasi daun jatuh
+                createFallingLeaves();
+
+                // Setup intersection observers
+                setupIntersectionObservers();
+            }
+
+            function setupHeroTitle() {
+                const titleElement = document.getElementById('hero-title');
+                const titleText = "Distribusi Pupuk Bersubsidi Lebih Mudah dan Terkontrol";
+
+                // Split text into words
+                const words = titleText.split(' ');
+
+                // Clear existing content
+                titleElement.innerHTML = '';
+
+                // Create word elements
+                words.forEach((word, index) => {
+                    const wordSpan = document.createElement('span');
+                    wordSpan.className = 'word';
+                    wordSpan.textContent = word;
+                    titleElement.appendChild(wordSpan);
+
+                    // Add space after word (except last word)
+                    if (index < words.length - 1) {
+                        titleElement.appendChild(document.createTextNode(' '));
+                    }
+                });
+
+                // Animate words appearing one by one
+                anime({
+                    targets: '.word',
+                    opacity: [0, 1],
+                    translateY: [20, 0],
+                    easing: "easeOutQuad",
+                    duration: 600,
+                    delay: function(el, i) {
+                        return 200 * (i + 1);
+                    }
                 });
             }
 
-            // Function to add shop markers to the map
-            function addShopMarkers() {
-                // Clear existing markers first
-                markers.forEach(marker => map.removeLayer(marker));
-                markers = [];
-
-                shops.forEach(shop => {
-                    const marker = L.marker([shop.lat, shop.lng], {
-                        shopId: shop.id,
-                        riseOnHover: true
-                    }).addTo(map);
-
-                    markers.push(marker);
-
-                    // Create popup content
-                    const popupContent = `
-                        <div class="p-2">
-                            <h3 class="font-bold">${shop.name}</h3>
-                            <p class="text-sm">${shop.address}</p>
-                            <p class="text-sm mt-1"><span class="font-medium">Status:</span> ${shop.status}</p>
-                            <p class="text-sm"><span class="font-medium">Stock:</span> ${shop.stock}</p>
-                            ${userLat && userLng ? `<p class="text-sm"><span class="font-medium">Distance:</span> ${shop.distance.toFixed(1)} km</p>` : ''}
-                        </div>
-                    `;
-
-                    marker.bindPopup(popupContent);
-                });
-            }
-
-            // Function to update shop markers based on filter
-            function updateShopMarkers(filteredShops) {
-                markers.forEach(marker => {
-                    const shopId = marker.options.shopId;
-                    const shop = shops.find(s => s.id === shopId);
-                    const shouldShow = filteredShops.some(s => s.id === shopId);
-                    
-                    if (shouldShow) {
-                        if (!map.hasLayer(marker)) {
-                            marker.addTo(map);
+            function setupIntersectionObservers() {
+                // Observer untuk animasi fitur saat discroll
+                const featuresObserver = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            anime({
+                                targets: '.feature-card',
+                                translateY: [50, 0],
+                                opacity: [0, 1],
+                                easing: "easeOutQuad",
+                                duration: 800,
+                                delay: function(el, i) {
+                                    return i * 200;
+                                }
+                            });
+                            featuresObserver.unobserve(entry.target);
                         }
-                    } else {
-                        if (map.hasLayer(marker)) {
-                            map.removeLayer(marker);
+                    });
+                }, {
+                    threshold: 0.2
+                });
+
+                const featuresSection = document.getElementById('features-section');
+                if (featuresSection) {
+                    featuresObserver.observe(featuresSection);
+                }
+
+                // Observer untuk animasi statistik
+                const statsObserver = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            // Animasi counting untuk statistik
+                            anime({
+                                targets: '.stat-number',
+                                innerHTML: function(el) {
+                                    const finalValue = el.getAttribute('data-value');
+                                    return [0, finalValue];
+                                },
+                                round: 1,
+                                easing: 'easeInOutExpo',
+                                duration: 2000,
+                                delay: function(el, i) {
+                                    return i * 300;
+                                }
+                            });
+                            statsObserver.unobserve(entry.target);
+                        }
+                    });
+                }, {
+                    threshold: 0.2
+                });
+
+                const statsSection = document.getElementById('stats-section');
+                if (statsSection) {
+                    statsObserver.observe(statsSection);
+                }
+
+                // Observer untuk animasi CTA
+                const ctaObserver = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            anime({
+                                targets: '.cta-section',
+                                translateY: [50, 0],
+                                opacity: [0, 1],
+                                easing: "easeOutQuad",
+                                duration: 800
+                            });
+                            ctaObserver.unobserve(entry.target);
+                        }
+                    });
+                }, {
+                    threshold: 0.2
+                });
+
+                const ctaSection = document.getElementById('cta-section');
+                if (ctaSection) {
+                    ctaObserver.observe(ctaSection);
+                }
+            }
+
+            function createFallingLeaves() {
+                const container = document.getElementById('leaves-container');
+                if (!container) return;
+
+                const containerWidth = container.offsetWidth;
+                const containerHeight = container.offsetHeight;
+
+                // Create more leaves with staggered timing
+                for (let i = 0; i < 30; i++) {
+                    createSingleLeaf(container, containerWidth, containerHeight, i * 300);
+                }
+            }
+
+            function createSingleLeaf(container, containerWidth, containerHeight, delay = 0) {
+                const leaf = document.createElement('div');
+                leaf.className = 'absolute w-6 h-6'; // Slightly larger for better visibility
+
+                // Random leaf color (green/yellow/orange)
+                const colors = ['text-green-500', 'text-green-600', 'text-green-500', 'text-green-600', 'text-green-500'];
+                leaf.classList.add(colors[Math.floor(Math.random() * colors.length)]);
+
+                // Different leaf shapes
+                const leafShapes = [
+                    `<svg viewBox="0 0 48 48" fill="currentColor"><path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.06.82C6.16 17.4 9 14 17 14V8zm0 0V2l6 3-6 3z"/></svg>`,
+                    `<svg viewBox="0 0 48 48" fill="currentColor"><path d="M24 4c-5 8-7 14-7 20 0 6 2 12 7 20 5-8 7-14 7-20 0-6-2-12-7-20z"/></svg>`,
+                    `<svg viewBox="0 0 48 48" fill="currentColor"><path d="M24 4c-2 4-3 8-3 12s1 8 3 12c2-4 3-8 3-12s-1-8-3-12z"/></svg>`
+                ];
+                leaf.innerHTML = leafShapes[Math.floor(Math.random() * leafShapes.length)];
+
+                // Random starting position
+                const startPosX = Math.random() * containerWidth;
+                leaf.style.left = startPosX + 'px';
+                leaf.style.top = '-30px';
+
+                // Random scale for variety
+                const scale = 0.5 + Math.random() * 0.7;
+                leaf.style.transform = `scale(${scale})`;
+
+                container.appendChild(leaf);
+
+                // Animation parameters
+                const duration = 8000 + Math.random() * 5000; // Longer duration for smoother fall
+                const xMovement = (Math.random() - 0.5) * 200; // More side-to-side movement
+
+                // Improved animation with more natural movement
+                anime({
+                    targets: leaf,
+                    translateY: containerHeight + 50,
+                    translateX: xMovement,
+                    rotate: {
+                        value: function() {
+                            return [0, 360 + Math.random() * 180]; // More rotation
+                        },
+                        easing: 'linear'
+                    },
+                    opacity: [{
+                            value: 0,
+                            duration: 0
+                        },
+                        {
+                            value: 0.8 + Math.random() * 0.2,
+                            duration: 500
+                        }, // Random peak opacity
+                        {
+                            value: 0,
+                            duration: 1000
+                        }
+                    ],
+                    easing: function(el, i, total) {
+                        // Custom easing for more natural fall
+                        const rand = 0.5 + Math.random() * 0.3;
+                        return function(progress) {
+                            return Math.pow(progress, rand);
+                        };
+                    },
+                    duration: duration,
+                    delay: delay + Math.random() * 3000,
+                    complete: function() {
+                        if (leaf.parentNode) {
+                            leaf.remove();
+                        }
+                        // Create new leaf with higher probability for continuous effect
+                        if (container && Math.random() > 0.2) {
+                            setTimeout(function() {
+                                createSingleLeaf(container, containerWidth, containerHeight);
+                            }, Math.random() * 2000);
                         }
                     }
                 });
             }
 
-            // Function to handle successful geolocation
-            function handleGeolocationSuccess(position) {
-                userLat = position.coords.latitude;
-                userLng = position.coords.longitude;
-
-                // Update location text
-                document.getElementById('location-text').textContent =
-                    `Your current location: ${userLat.toFixed(5)}, ${userLng.toFixed(5)}`;
-
-                // Add user location marker
-                if (userMarker) {
-                    map.removeLayer(userMarker);
-                }
-                
-                userMarker = L.marker([userLat, userLng], {
-                    icon: L.divIcon({
-                        className: 'user-location-marker',
-                        html: '<div style="background-color: #3B82F6; width: 20px; height: 20px; border-radius: 50%; border: 2px solid white;"></div>',
-                        iconSize: [24, 24]
-                    }),
-                    zIndexOffset: 1000
-                }).addTo(map);
-
-                userMarker.bindPopup("<b>Lokasi Anda</b>").openPopup();
-
-                // Calculate distances for each shop
-                shops.forEach(shop => {
-                    shop.distance = calculateDistance(userLat, userLng, shop.lat, shop.lng);
+            // Smooth scroll untuk navigasi (jika ada)
+            document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
                 });
+            });
 
-                // Filter and render the shops
-                filterAndRenderShops();
-
-                // Create bounds that include user location and filtered shops
-                const filteredShops = filterShops();
-                const bounds = L.latLngBounds([
-                    [userLat, userLng] // Add user location first
-                ]);
-
-                // Extend bounds to include filtered shop locations
-                filteredShops.forEach(shop => {
-                    bounds.extend([shop.lat, shop.lng]);
-                });
-
-                // Fit the map to the bounds with padding
-                if (bounds.isValid()) {
-                    map.fitBounds(bounds, {
-                        padding: [50, 50],
-                        maxZoom: 16
+            // Tambahkan event listener untuk tombol CTA
+            document.querySelectorAll('.cta-button, .final-cta').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    // Animasi klik
+                    anime({
+                        targets: this,
+                        scale: [1, 0.95, 1],
+                        duration: 200,
+                        easing: 'easeInOutQuad'
                     });
-                }
 
-                // If the zoom level is too far out, set a reasonable zoom
-                if (map.getZoom() > 14) {
-                    map.setZoom(14);
-                }
-            }
+                    // Di sini Anda bisa menambahkan logika untuk redirect atau modal
+                    console.log('Button clicked:', this.textContent.trim());
 
-            // Function to handle geolocation error
-            function handleGeolocationError(error) {
-                console.error("Error getting user location:", error);
-                document.getElementById('location-text').textContent = 
-                    error.code === error.PERMISSION_DENIED 
-                    ? "Location access denied. Showing all shops." 
-                    : "Couldn't determine your location. Showing all shops.";
-
-                // Create bounds that include all shops
-                const bounds = L.latLngBounds([]);
-                shops.forEach(shop => {
-                    bounds.extend([shop.lat, shop.lng]);
+                    // Contoh: redirect ke halaman pendaftaran
+                    // window.location.href = '/register';
                 });
+            });
 
-                // Fit the map to the bounds with padding
-                if (bounds.isValid()) {
-                    map.fitBounds(bounds, {
-                        padding: [50, 50],
-                        maxZoom: 14
+            // Optimasi performa: pause animasi saat tab tidak aktif
+            document.addEventListener('visibilitychange', function() {
+                const leaves = document.querySelectorAll('#leaves-container > div');
+                if (document.hidden) {
+                    // Pause atau hapus animasi daun saat tab tidak aktif
+                    leaves.forEach(function(leaf) {
+                        if (leaf.parentNode) {
+                            leaf.remove();
+                        }
                     });
                 } else {
-                    // Fallback to default view if no shops
-                    map.setView([-8.165833, 113.716944], 14);
+                    // Resume animasi saat tab aktif kembali
+                    setTimeout(createFallingLeaves, 1000);
                 }
-
-                filterAndRenderShops();
-            }
-
-            // Initialize the map with shop markers
-            addShopMarkers();
-            renderShopsList();
-
-            // Try to get user's current location with timeout
-            if (navigator.geolocation) {
-                const geoOptions = {
-                    enableHighAccuracy: true,
-                    timeout: 5000,
-                    maximumAge: 0
-                };
-
-                navigator.geolocation.getCurrentPosition(
-                    handleGeolocationSuccess,
-                    handleGeolocationError,
-                    geoOptions
-                );
-            } else {
-                console.log("Geolocation is not supported by this browser.");
-                document.getElementById('location-text').textContent = 
-                    "Geolocation not supported. Showing all shops.";
-
-                // Create bounds that include all shops
-                const bounds = L.latLngBounds([]);
-                shops.forEach(shop => {
-                    bounds.extend([shop.lat, shop.lng]);
-                });
-
-                if (bounds.isValid()) {
-                    map.fitBounds(bounds, {
-                        padding: [50, 50],
-                        maxZoom: 14
-                    });
-                }
-
-                filterAndRenderShops();
-            }
-
-            // Handle window resize to ensure map tiles load properly
-            window.addEventListener('resize', function() {
-                map.invalidateSize();
             });
-        });
-    </script>
-@endsection
+
+            // Responsive handling
+            let resizeTimeout;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(function() {
+                    // Restart falling leaves animation with new dimensions
+                    const container = document.getElementById('leaves-container');
+                    if (container) {
+                        // Clear existing leaves
+                        container.innerHTML = '';
+                        // Restart animation
+                        setTimeout(createFallingLeaves, 500);
+                    }
+
+                    // Re-setup hero title if needed
+                    const titleElement = document.getElementById('hero-title');
+                    if (titleElement && titleElement.children.length === 0) {
+                        setupHeroTitle();
+                    }
+                }, 250);
+            });
+        </script>
+    </body>
+
+</html>
