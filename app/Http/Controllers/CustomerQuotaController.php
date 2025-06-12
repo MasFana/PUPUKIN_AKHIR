@@ -28,8 +28,7 @@ class CustomerQuotaController extends Controller
         $usedQuota = Transaction::where('customer_id', $customer->id)
             ->whereMonth('created_at', $currentMonth)
             ->whereYear('created_at', $currentYear)
-            ->where('status', 'completed')
-            ->sum('quantity_kg');
+                ->sum('quantity_kg');
 
         // Calculate remaining quota
         $remainingQuota = max(0, $monthlyQuota - $usedQuota);

@@ -547,7 +547,7 @@
                         },
                         {
                             value: 0.8 + Math.random() * 0.2,
-                            duration: 500
+                            duration: 2000
                         }, // Random peak opacity
                         {
                             value: 0,

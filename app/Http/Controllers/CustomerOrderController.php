@@ -72,8 +72,26 @@ class CustomerOrderController extends Controller
 
         $totalPrice = $fertilizer->price_per_kg * $request->quantity_kg;
 
-        // Create transaction
-        $transaction = Transaction::create([
+
+        // Update stock
+        $stock->quantity_kg -= $request->quantity_kg;
+
+        // Update customer's Quota - safer implementation
+        $quota = $customer->quotas()->first();
+
+        if ($quota) {
+            // Ensure we don't go negative
+            $quota->remaining_kg = max(0, $quota->remaining_kg - $request->quantity_kg);
+            $quota->save();
+        } else {
+            // Handle case where customer has no quota
+            throw new \Exception('Customer has no quota assigned');
+        }
+
+        // Save stock changes
+        $stock->save();
+
+        Transaction::create([
             'customer_id' => $customer->id,
             'owner_id' => $request->owner_id,
             'fertilizer_id' => $fertilizer->id,
@@ -94,7 +112,6 @@ class CustomerOrderController extends Controller
         $usedQuota = Transaction::where('customer_id', $customer->id)
             ->whereMonth('created_at', $currentMonth)
             ->whereYear('created_at', $currentYear)
-            ->where('status', 'completed')
             ->sum('quantity_kg');
 
         return max(0, ($customer->farm_area * 10) - $usedQuota);
