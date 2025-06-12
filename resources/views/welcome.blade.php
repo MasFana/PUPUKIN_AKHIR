@@ -294,7 +294,7 @@
             <div class="container mx-auto px-4">
                 <div class="cta-section mx-auto max-w-3xl text-center">
                     <h2 class="mb-6 text-3xl font-bold text-green-800 md:text-4xl">
-                        Bergabunglah dengan Ekosistem PUP PUK in
+                        Bergabunglah dengan Ekosistem PUPUKIN
                     </h2>
 
                     <p class="mb-10 text-xl text-gray-600">

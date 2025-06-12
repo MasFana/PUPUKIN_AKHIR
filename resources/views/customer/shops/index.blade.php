@@ -76,7 +76,7 @@
             </svg>
             <span class="text-blue-700" id="location-text">Detecting your location...</span>
         </div>
-    </ma>
+    </main>
 
     
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -99,7 +99,6 @@
 
             // Add OpenStreetMap tiles with proper error handling
             const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
                 maxZoom: 19,
                 minZoom: 3
             }).addTo(map);
