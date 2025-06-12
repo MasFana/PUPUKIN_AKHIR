@@ -1,12 +1,12 @@
 @extends('shared.layouts.app')
 
 @section('title', 'Edit Profil')
-
+<x-script-geo-selector />
 @section('content')
     <main class="min-h-screen">
         <div class="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
             <div class="overflow-hidden rounded-lg bg-white shadow-xl">
-                
+
                 <div class="bg-green-600 px-8 py-8">
                     <div class="flex items-center space-x-6">
                         <div class="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-full bg-white">
@@ -22,11 +22,9 @@
                     </div>
                 </div>
 
-                
                 <form class="px-10 py-10" action="{{ route('customer.profile.update') }}" method="POST">
                     @csrf
 
-                    
                     <div class="mb-10">
                         <h2 class="mb-6 text-xl font-semibold text-gray-900">Informasi Pribadi</h2>
                         <div class="space-y-6">
@@ -54,7 +52,6 @@
                         </div>
                     </div>
 
-                    
                     <div class="mb-10">
                         <h2 class="mb-6 text-xl font-semibold text-gray-900">Ubah Password</h2>
                         <div class="space-y-6">
@@ -81,7 +78,6 @@
                         </div>
                     </div>
 
-                    
                     <div class="mb-10">
                         <h2 class="mb-6 text-xl font-semibold text-gray-900">Informasi Pelanggan</h2>
                         <div class="space-y-6">
@@ -108,17 +104,30 @@
                             </div>
                             <div>
                                 <label class="mb-2 block text-base font-medium text-gray-700" for="address">Alamat</label>
+                                <div class="relative mt-2 h-64 w-full overflow-hidden rounded-lg border border-gray-300">
+                                    <div class="relative" id="map"></div>
+                                </div>
                                 <textarea
-                                    class="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-3 text-base shadow-sm focus:border-green-500 focus:ring-green-500"
+                                    class="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:border-green-500 focus:ring-green-500"
                                     id="address" name="address" rows="4" required>{{ old('address', $customer->address) }}</textarea>
                                 @error('address')
                                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
+                                <!-- Search Box -->
+                                <div class="relative mt-2">
+                                    <input
+                                        class="w-full rounded-lg border border-gray-300 px-3 py-2 pr-24 focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-200"
+                                        id="location-search" type="text" placeholder="Pilih lokasi..." disabled>
+                                    <button
+                                        class="absolute right-2 top-1/2 -translate-y-1/2 text-sm font-medium text-green-600 hover:text-green-800"
+                                        id="use-current-location" type="button">
+                                        Gunakan Lokasi Saat Ini
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    
                     <div class="mt-12 flex justify-between">
                         <a class="inline-flex items-center rounded-lg border border-gray-300 bg-white px-6 py-3 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
                             href="{{ route('customer.profile.show') }}">
