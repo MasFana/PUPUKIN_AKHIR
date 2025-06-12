@@ -156,7 +156,7 @@
 
                     <div class="mb-12 flex flex-col justify-center gap-4 sm:flex-row">
                         <a href="{{ route('register.customer') }}"
-                            class="cta-button loading flex transform items-center justify-center rounded-lg bg-green-600 px-8 py-3 font-bold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-green-700 hover:shadow-xl">
+                            class="cta-button loading flex transform items-center justify-center rounded-lg bg-green-500 px-8 py-3 font-bold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-green-600 hover:shadow-xl">
                             Daftar Petani
                             <svg class="ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -166,7 +166,7 @@
                             </svg>
                         </a>
                         <a href="{{ route('register.owner') }}"
-                            class="cta-button loading flex transform items-center justify-center rounded-lg bg-amber-600 px-8 py-3 font-bold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-amber-700 hover:shadow-xl">
+                            class="cta-button loading flex transform items-center justify-center rounded-lg bg-amber-500 px-8 py-3 font-bold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-amber-600 hover:shadow-xl">
                             Daftar Toko
                             <svg class="ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -303,7 +303,7 @@
                     </p>
 
                     <button
-                        class="final-cta transform rounded-lg bg-green-600 px-10 py-4 text-xl font-bold text-white shadow-lg transition-all duration-300 hover:scale-110 hover:bg-green-700 hover:shadow-xl">
+                        class="final-cta transform rounded-lg bg-green-500 px-10 py-4 text-xl font-bold text-white shadow-lg transition-all duration-300 hover:scale-110 hover:bg-green-600 hover:shadow-xl">
                         Mulai Sekarang
                     </button>
                 </div>

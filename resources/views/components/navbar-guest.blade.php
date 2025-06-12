@@ -32,7 +32,7 @@
             <div class="hidden items-center space-x-4 md:flex">
                 
 
-                <a class="inline-flex items-center rounded-md border border-transparent bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors duration-200 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                <a class="inline-flex items-center rounded-md border border-transparent bg-green-500 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors duration-200 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
                     href="{{ route('login') }}">
                     Masuk
                 </a>
@@ -61,8 +61,8 @@
 
     <!-- Mobile menu -->
     <div class="md:hidden" x-show="open">
-        <div class="space-y-1 pb-3 pt-2">
-            <a class="{{ request()->routeIs('customer.dashboard') ? 'text-green-600 border-b-2 border-green-600' : 'text-gray-700 hover:text-green-600' }} px-1 py-2 text-sm font-medium"
+        <div class="space-y-1 pb-3 pt-2 px-4">
+            {{-- <a class="{{ request()->routeIs('customer.dashboard') ? 'text-green-600 border-b-2 border-green-600' : 'text-gray-700 hover:text-green-600' }} px-1 py-2 text-sm font-medium"
                 href="{{ route('customer.dashboard') }}">
                 Home
             </a>
@@ -75,7 +75,7 @@
             <a class="{{ request()->routeIs('customer.orders.*') ? 'text-green-600 border-b-2 border-green-600' : 'text-gray-700 hover:text-green-600' }} px-1 py-2 text-sm font-medium"
                 href="{{ route('register.customer') }}">
                 Daftar Pelanggan
-            </a>
+            </a> --}}
             <a class="block w-full rounded-md bg-green-600 px-3 py-2 text-center text-base font-medium text-white hover:bg-green-700"
                 href="{{ route('login') }}">
                 Masuk
