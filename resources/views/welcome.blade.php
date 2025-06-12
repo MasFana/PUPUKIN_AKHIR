@@ -59,9 +59,9 @@
             /* Custom gradient */
             .hero-gradient {
                 background: linear-gradient(135deg, 
-                    rgba(240, 253, 244, 0.75) 0%, 
-                    rgba(220, 252, 231, 0.75) 50%, 
-                    rgba(187, 247, 208, 0.75) 100%),
+                    rgba(240, 253, 244, 0.3) 0%, 
+                    rgba(220, 252, 231, 0.3) 50%, 
+                    rgba(187, 247, 208, 0.3) 100%),
                     url('/landing.png');
                 background-size: cover;
                 background-position: center;
@@ -494,7 +494,7 @@
                 const containerHeight = container.offsetHeight;
 
                 // Create more leaves with staggered timing
-                for (let i = 0; i < 30; i++) {
+                for (let i = 0; i < 20; i++) {
                     createSingleLeaf(container, containerWidth, containerHeight, i * 300);
                 }
             }
@@ -509,9 +509,9 @@
 
                 // Different leaf shapes
                 const leafShapes = [
-                    `<svg viewBox="0 0 48 48" fill="currentColor"><path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.06.82C6.16 17.4 9 14 17 14V8zm0 0V2l6 3-6 3z"/></svg>`,
-                    `<svg viewBox="0 0 48 48" fill="currentColor"><path d="M24 4c-5 8-7 14-7 20 0 6 2 12 7 20 5-8 7-14 7-20 0-6-2-12-7-20z"/></svg>`,
-                    `<svg viewBox="0 0 48 48" fill="currentColor"><path d="M24 4c-2 4-3 8-3 12s1 8 3 12c2-4 3-8 3-12s-1-8-3-12z"/></svg>`
+                    `<svg viewBox="0 0 64 64" fill="currentColor"><path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.06.82C6.16 17.4 9 14 17 14V8zm0 0V2l6 3-6 3z"/></svg>`,
+                    `<svg viewBox="0 0 64 64" fill="currentColor"><path d="M24 4c-5 8-7 14-7 20 0 6 2 12 7 20 5-8 7-14 7-20 0-6-2-12-7-20z"/></svg>`,
+                    `<svg viewBox="0 0 64 64" fill="currentColor"><path d="M24 4c-2 4-3 8-3 12s1 8 3 12c2-4 3-8 3-12s-1-8-3-12z"/></svg>`
                 ];
                 leaf.innerHTML = leafShapes[Math.floor(Math.random() * leafShapes.length)];
 
