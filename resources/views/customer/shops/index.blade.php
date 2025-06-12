@@ -243,7 +243,6 @@
                     }`;
 
                     shopElement.innerHTML = `
-    <div class="p-4 border border-gray-200 rounded-lg hover:shadow transition duration-150 ease-in-out">
         <div class="flex justify-between items-start">
             <h3 class="font-semibold text-lg text-green-800">${shop.name}</h3>
             <span class="px-2 py-1 text-xs rounded-full ${
@@ -267,7 +266,7 @@
                 Belanja
             </a>
         </div>
-    </div>
+    
 `;
 
 
