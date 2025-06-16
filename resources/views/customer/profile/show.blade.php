@@ -3,6 +3,7 @@
 @section('title', 'Profil Pelanggan')
 
 @section('content')
+<x-script-geo-selector/>
 <main class="min-h-screen">
     <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div class="max-w-4xl mx-auto"> 
@@ -52,8 +53,16 @@
                                 <p class="text-gray-900 text-lg">{{ number_format($customer->farm_area, 0) }} hektar</p> 
                             </div>
                             <div>
+                                <div class=" rounded-lg overflow-hidden pointer-events-none mb-2">
+                                    <div id="map"></div>
+                                </div>
                                 <p class="text-md text-gray-500">Alamat</p> 
                                 <p class="text-gray-900 text-lg">{{ $customer->address }}</p> 
+                            </div>
+                            <div class="hidden">
+                                <input type="hidden" id="lat" name="lat" value="{{ 0 }}">
+                                <input type="hidden" id="long" name="long" value="{{ 0 }}">
+                                <a id="use-current-location"></a>
                             </div>
                         </div>
                     </div>

@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OwnerController;
+use App\Http\Controllers\OwnerTransactionController;
+use App\Http\Controllers\OwnerProfileController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CustomerProfileController;
@@ -9,7 +11,6 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerQuotaController;
 use App\Http\Controllers\CustomerOrderController;
 use App\Http\Controllers\CustomerShopsController;
-use App\Http\Controllers\OwnerTransactionController;
 // Public Routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
@@ -40,6 +41,11 @@ Route::middleware(['auth', 'owner'])->prefix('owner')->group(function () {
         // Route::get('/{id}', [OwnerTransactionController::class, 'show'])->name('owner.transactions.show');
         Route::post('/{id}/complete', [OwnerTransactionController::class, 'completed'])->name('owner.transactions.completed');
         Route::post('/{id}/cancel', [OwnerTransactionController::class, 'canceled'])->name('owner.transactions.canceled');
+    });
+    Route::prefix('/profile')->group(function () {
+        Route::get('/', [OwnerProfileController::class, 'show'])->name('owner.profile.show');
+        Route::get('/edit', [OwnerProfileController::class, 'edit'])->name('owner.profile.edit');
+        Route::post('/update', [OwnerProfileController::class, 'update'])->name('owner.profile.update');
     });
 });
 

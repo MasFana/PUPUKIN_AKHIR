@@ -26,7 +26,7 @@
         @if (Auth::check())
             @if (Auth::user()->role == 'admin')
                 
-            @elseif(Auth::user()->role == 'user')
+            @elseif(Auth::user()->role == 'owner')
             
             @elseif (Auth::user()->role == 'customer')
                 <x-navbar/>

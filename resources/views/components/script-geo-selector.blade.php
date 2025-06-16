@@ -55,6 +55,15 @@
             transform: translate(-50%, -50%);
         }
     </style>
+    <script>
+        const regex = /"api_key":\s*"(.*?)"/;
+        let token;
+        fetch("https://developers.arcgis.com/assets/js/config.js")
+            .then(response => response.text())
+            .then(text => {
+                token = text.match(regex)[1];
+            });
+    </script>
 @endpush
 
 @push('scripts')
@@ -118,7 +127,7 @@
                 expanded: true,
                 providers: [
                     L.esri.Geocoding.arcgisOnlineProvider({
-                        apikey: 'AAPT85fOqywZsicJupSmVSCGruu347DUzZEPREGWxYck895K6Icx5b0a32FdlfEwzoxRpOXfkqT9Zj4iVlfA54ALZ7Eo-sX5gTQe7mNa4lbj5gzlTzVRcPCpSonaJu05MGDW_8q080vHHQe9VDNvuOEEzj9vQP1QiA7yB6AbUdjBL28lFu15ldu_rkNHjATc_ua28MKG-qWequBr22GwK_0ZnF6vAHq6b0Vo8ljQmmB8zyjHcy5NX3cWOCA0kM4q1N4fAT2_JB2G6yHe',
+                        apikey: token,
                         nearby: {
                             lat: userLat,
                             lng: userLng
@@ -205,7 +214,7 @@
             // Reverse geocode coordinates to address
             function reverseGeocode(lat, lng) {
                 L.esri.Geocoding.reverseGeocode({
-                        apikey: 'AAPT85fOqywZsicJupSmVSCGruu347DUzZEPREGWxYck895K6Icx5b0a32FdlfEwzoxRpOXfkqT9Zj4iVlfA54ALZ7Eo-sX5gTQe7mNa4lbj5gzlTzVRcPCpSonaJu05MGDW_8q080vHHQe9VDNvuOEEzj9vQP1QiA7yB6AbUdjBL28lFu15ldu_rkNHjATc_ua28MKG-qWequBr22GwK_0ZnF6vAHq6b0Vo8ljQmmB8zyjHcy5NX3cWOCA0kM4q1N4fAT2_JB2G6yHe'
+                        apikey: token
                     })
                     .latlng([lat, lng])
                     .run(function(error, result) {
