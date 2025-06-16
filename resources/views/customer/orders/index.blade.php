@@ -21,7 +21,7 @@
                         </div>
                     </div>
 
-                    <div class="px-8 py-6">
+                    <div class="">
                         @if (session('success'))
                             <div class="mb-6 rounded-lg bg-green-100 p-4 text-green-700">
                                 {{ session('success') }}

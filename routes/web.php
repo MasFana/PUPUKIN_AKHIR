@@ -12,7 +12,7 @@ use App\Http\Controllers\CustomerQuotaController;
 use App\Http\Controllers\CustomerOrderController;
 use App\Http\Controllers\CustomerShopsController;
 use App\Http\Controllers\OwnerStockController;
-
+use App\Http\Controllers\AdminStockController;
 
 // Public Routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -36,6 +36,11 @@ Route::middleware('auth')->group(function () {
 // Admin Routes
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
+    
+    Route::prefix('/stocks')->group(function () {
+        Route::get('/', [AdminStockController::class, 'index'])->name('admin.stocks.index');
+        Route::post('/{id}', [AdminStockController::class, 'update'])->name('admin.stocks.update');
+    });
 });
 
 // Owner Routes
