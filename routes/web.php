@@ -9,7 +9,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerQuotaController;
 use App\Http\Controllers\CustomerOrderController;
 use App\Http\Controllers\CustomerShopsController;
-
+use App\Http\Controllers\OwnerTransactionController;
 // Public Routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
@@ -35,7 +35,12 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 // Owner Routes
 Route::middleware(['auth', 'owner'])->prefix('owner')->group(function () {
     Route::get('/dashboard', [OwnerController::class, 'index'])->name('owner.dashboard');
-
+    Route::group(['prefix' => 'transactions'], function () {
+        Route::get('/', [OwnerTransactionController::class, 'index'])->name('owner.transactions.index');
+        // Route::get('/{id}', [OwnerTransactionController::class, 'show'])->name('owner.transactions.show');
+        Route::post('/{id}/complete', [OwnerTransactionController::class, 'completed'])->name('owner.transactions.completed');
+        Route::post('/{id}/cancel', [OwnerTransactionController::class, 'canceled'])->name('owner.transactions.canceled');
+    });
 });
 
 // Customer Routes

@@ -120,8 +120,8 @@ class DatabaseSeeder extends Seeder
 
         // Create current month transactions with the selected owner
         $this->createTransaction($customer, $transactionOwner, $urea, 5, 'completed', now());
-        $this->createTransaction($customer, $transactionOwner, $urea, 7, 'completed', now()->subDays(3));
-        $this->createTransaction($customer, $transactionOwner, $urea, 3, 'completed', now()->subDays(7));
+        $this->createTransaction($customer, $transactionOwner, $urea, 7, 'pending', now()->subDays(3));
+        $this->createTransaction($customer, $transactionOwner, $urea, 3, 'pending', now()->subDays(7));
 
         // Also add a pending transaction (shouldn't affect quota)
         $this->createTransaction($customer, $transactionOwner, $urea, 5, 'pending', now()->subDays(1));

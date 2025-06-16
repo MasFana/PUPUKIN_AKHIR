@@ -9,9 +9,6 @@
                 <div class="mx-auto w-full max-w-md">
                     <!-- Logo -->
                         <div class="mb-4 text-2xl font-bold text-green-600">Pupukin</div>
-    
-                    
-
                     <!-- Header -->
                     <h1 class="mb-4 text-2xl font-bold text-gray-900">Halo Selamat Datang!!!</h1>
                     <p class="mb-8 text-gray-500">Masukkan email dan password untuk login</p>

@@ -244,16 +244,14 @@
                             <svg class="h-8 w-8 text-green-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round">
-                                <path
-                                    d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z">
-                                </path>
-                                <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path>
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
                             </svg>
                         </div>
-                        <h3 class="mb-3 text-center text-xl font-bold text-green-800">Edukasi Pertanian</h3>
+                        <h3 class="mb-3 text-center text-xl font-bold text-green-800">Mencari Toko Disekitar</h3>
                         <p class="text-center text-gray-600">
-                            Akses informasi dan panduan penggunaan pupuk yang tepat untuk meningkatkan hasil panen dan
-                            kualitas tanaman
+                            Temukan toko resmi terdekat yang menyediakan pupuk bersubsidi dengan mudah melalui fitur
+                            pencarian lokasi
                         </p>
                     </div>
                 </div>
