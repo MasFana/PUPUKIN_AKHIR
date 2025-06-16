@@ -27,8 +27,8 @@ class StockRequest extends Model
         return $this->belongsTo(Fertilizer::class, 'fertilizer_id');
     }
 
-    public function getFormatedQuantityKgAttribute($value)
+    public function getFormattedQuantityAttribute()
     {
-        return number_format($value, 0, ',', '.');
+        return number_format($this->quantity_kg, 0, ',', '.');
     }
 }

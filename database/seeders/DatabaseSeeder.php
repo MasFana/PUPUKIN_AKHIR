@@ -12,7 +12,7 @@ use App\Models\Quota;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
-
+use App\Models\StockRequest;
 class DatabaseSeeder extends Seeder
 {
     public function run()
@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
         Stock::truncate();
         Quota::truncate();
         Transaction::truncate();
-
+        StockRequest::truncate();
         // Create admin user
         User::create([
             'name' => 'Admin User',
@@ -132,6 +132,16 @@ class DatabaseSeeder extends Seeder
 
         // Update the remaining quota based on actual completed transactions
         $this->updateRemainingQuota($customer, $urea);
+        
+        // Create stock requests for each owner
+        foreach ($owners as $owner) {
+            // Create 2 stock requests for each owner
+            for ($j = 0; $j < 4; $j++) {
+                $fertilizer = Fertilizer::inRandomOrder()->first();
+                $quantity = rand(100, 500); // Random quantity between 100kg and 500kg
+                $this->createStockRequest($owner, $fertilizer, $quantity);
+            }
+        }
     }
 
     private function createTransaction($customer, $owner, $fertilizer, $quantity, $status, $date)
@@ -146,6 +156,18 @@ class DatabaseSeeder extends Seeder
             'completed_at' => $status === 'completed' ? $date : null,
             'created_at' => $date,
             'updated_at' => $date
+        ]);
+    }
+
+    private function createStockRequest($owner, $fertilizer, $quantity)
+    {
+        return StockRequest::create([
+            'owner_id' => $owner->id,
+            'fertilizer_id' => $fertilizer->id,
+            'quantity_kg' => $quantity,
+            'status' => 'pending',
+            'admin_notes' => null,
+            'processed_at' => null
         ]);
     }
 

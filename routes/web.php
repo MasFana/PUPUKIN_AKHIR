@@ -11,6 +11,9 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerQuotaController;
 use App\Http\Controllers\CustomerOrderController;
 use App\Http\Controllers\CustomerShopsController;
+use App\Http\Controllers\OwnerStockController;
+
+
 // Public Routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
@@ -28,14 +31,16 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
+
+
 // Admin Routes
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
-    Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
 });
 
 // Owner Routes
 Route::middleware(['auth', 'owner'])->prefix('owner')->group(function () {
-    Route::get('/dashboard', [OwnerController::class, 'index'])->name('owner.dashboard');
+    Route::get('/', [OwnerController::class, 'index'])->name('owner.dashboard');
     Route::group(['prefix' => 'transactions'], function () {
         Route::get('/', [OwnerTransactionController::class, 'index'])->name('owner.transactions.index');
         // Route::get('/{id}', [OwnerTransactionController::class, 'show'])->name('owner.transactions.show');
@@ -46,6 +51,12 @@ Route::middleware(['auth', 'owner'])->prefix('owner')->group(function () {
         Route::get('/', [OwnerProfileController::class, 'show'])->name('owner.profile.show');
         Route::get('/edit', [OwnerProfileController::class, 'edit'])->name('owner.profile.edit');
         Route::post('/update', [OwnerProfileController::class, 'update'])->name('owner.profile.update');
+    });
+    Route::prefix('/stocks')->group(function () {
+        Route::get('/', [OwnerStockController::class, 'index'])->name('owner.stocks.index');
+        Route::post('/requests', [OwnerStockController::class, 'storeRequest'])->name('owner.stocks.requests.store');
+        Route::delete('/requests/{id}', [OwnerStockController::class, 'destroyRequest'])->name('owner.stocks.requests.destroy');
+        // Additional routes for stocks can be added here
     });
 });
 
