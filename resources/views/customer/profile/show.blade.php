@@ -9,7 +9,7 @@
         <div class="max-w-4xl mx-auto"> 
             <div class="bg-white shadow-xl rounded-lg overflow-hidden"> 
                 
-                <div class="bg-green-600 px-8 py-12 sm:px-12 sm:py-16"> 
+                <div class="bg-green-600 px-8 py-8 sm:px-12"> 
                     <div class="flex items-center space-x-6"> 
                         <div class="flex-shrink-0 h-24 w-24 rounded-full bg-white flex items-center justify-center"> 
                             <svg class="h-14 w-14 text-green-600" fill="currentColor" viewBox="0 0 24 24"> 
@@ -53,7 +53,7 @@
                                 <p class="text-gray-900 text-lg">{{ number_format($customer->farm_area, 0) }} hektar</p> 
                             </div>
                             <div>
-                                <div class=" rounded-lg overflow-hidden pointer-events-none mb-2">
+                                <div class="rounded-lg overflow-hidden pointer-events-none mb-2">
                                     <div id="map"></div>
                                 </div>
                                 <p class="text-md text-gray-500">Alamat</p> 

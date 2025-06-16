@@ -8,7 +8,7 @@
             <div class="mx-auto max-w-4xl">
                 <div class="overflow-hidden rounded-lg bg-white shadow-xl">
 
-                    <div class="bg-green-600 px-8 py-12 sm:px-12 sm:py-16">
+                    <div class="bg-green-600 px-8 py-8 sm:px-12">
                         <div class="flex items-center space-x-6">
                             <div class="flex h-24 w-24 flex-shrink-0 items-center justify-center rounded-full bg-white">
                                 <svg class="h-14 w-14 text-green-600" fill="currentColor" viewBox="0 0 24 24">
