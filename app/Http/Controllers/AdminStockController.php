@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\StockRequest;
 class AdminStockController extends Controller
 {
+    public function inventory()
+    {
+        return view('admin.stocks.inventory');
+    }
     public function index()
     {
         $requests = StockRequest::with(['owner.user', 'fertilizer'])

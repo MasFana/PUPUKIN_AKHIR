@@ -1,10 +1,13 @@
 @extends('shared.layouts.app')
 
 @section('title', 'Manajemen Transaksi')
+@push('head')
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+@endpush
 
 @section('content')
-    <main class="min-h-screen mt-8">
-        <div class="mx-auto container">
+    <main class="mt-8 min-h-screen">
+        <div class="container mx-auto">
             <div class="mx-auto">
                 <div class="overflow-hidden rounded-lg bg-white shadow-xl">
 
@@ -28,28 +31,36 @@
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50">
                                     <tr>
-                                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                                        <th
+                                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                                             ID
                                         </th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                                        <th
+                                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                                             Pelanggan
                                         </th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                                        <th
+                                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                                             Pupuk
                                         </th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                                        <th
+                                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                                             Jumlah (kg)
                                         </th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                                        <th
+                                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                                             Total
                                         </th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                                        <th
+                                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                                             Status
                                         </th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                                        <th
+                                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                                             Tanggal
                                         </th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                                        <th
+                                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                                             Actions
                                         </th>
                                     </tr>
@@ -64,8 +75,10 @@
                                                 <div class="group flex items-center">
                                                     <i class="fas fa-user-circle mr-2 text-gray-400"></i>
                                                     <span class="relative">
-                                                        <span class="group-hover:hidden">{{ $trx->customer->user->name ?? '-' }}</span>
-                                                        <span class="hidden group-hover:inline">{{ $trx->customer->nik ?? '-' }}</span>
+                                                        <span
+                                                            class="group-hover:hidden">{{ $trx->customer->user->name ?? '-' }}</span>
+                                                        <span
+                                                            class="hidden group-hover:inline">{{ $trx->customer->nik ?? '-' }}</span>
                                                     </span>
                                                 </div>
                                             </td>
@@ -82,34 +95,35 @@
                                                 Rp{{ number_format($trx->total_price, 0, ',', '.') }}
                                             </td>
                                             <td class="whitespace-nowrap px-6 py-4 text-sm">
-                                                <span @class([
+                                                <span id="status-{{ $trx->id }}" @class([
                                                     'px-2 inline-flex text-xs leading-5 font-semibold rounded-full',
                                                     'bg-yellow-100 text-yellow-800' => $trx->status === 'pending',
                                                     'bg-green-100 text-green-800' => $trx->status === 'completed',
                                                     'bg-red-100 text-red-800' => $trx->status === 'cancelled',
-                                                ]) id="status-{{ $trx->id }}">
+                                                ])>
                                                     {{ ucfirst($trx->status) }}
                                                 </span>
                                             </td>
                                             <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                                 {{ $trx->created_at->format('d M Y') }}
                                             </td>
-                                            <td class="whitespace-nowrap px-6 py-4 text-sm font-medium" id="actions-{{ $trx->id }}">
+                                            <td class="whitespace-nowrap px-6 py-4 text-sm font-medium"
+                                                id="actions-{{ $trx->id }}">
                                                 @if ($trx->status === 'pending')
                                                     <div class="flex space-x-2">
                                                         <!-- Approve Button -->
                                                         <button class="approve-btn text-green-600 hover:text-green-900"
                                                             data-transaction-id="{{ $trx->id }}"
-                                                            data-url="{{ route('owner.transactions.completed', $trx->id) }}" type="button"
-                                                            title="Approve">
+                                                            data-url="{{ route('owner.transactions.completed', $trx->id) }}"
+                                                            type="button" title="Approve">
                                                             <i class="fas fa-check"></i>
                                                         </button>
 
                                                         <!-- Reject Button -->
                                                         <button class="reject-btn text-red-600 hover:text-red-900"
                                                             data-transaction-id="{{ $trx->id }}"
-                                                            data-url="{{ route('owner.transactions.canceled', $trx->id) }}" type="button"
-                                                            title="Reject">
+                                                            data-url="{{ route('owner.transactions.canceled', $trx->id) }}"
+                                                            type="button" title="Reject">
                                                             <i class="fas fa-times"></i>
                                                         </button>
                                                     </div>
@@ -139,7 +153,6 @@
 @endsection
 
 @push('scripts')
-    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         const Toast = Swal.mixin({
@@ -188,10 +201,12 @@
                         // Update status badge
                         const statusBadge = document.querySelector(`#status-${transactionId}`);
                         if (action === 'approve') {
-                            statusBadge.className = 'px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800';
+                            statusBadge.className =
+                                'px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800';
                             statusBadge.textContent = 'Completed';
                         } else {
-                            statusBadge.className = 'px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800';
+                            statusBadge.className =
+                                'px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800';
                             statusBadge.textContent = 'Cancelled';
                         }
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminFertilizerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\OwnerTransactionController;
@@ -14,7 +15,7 @@ use App\Http\Controllers\CustomerShopsController;
 use App\Http\Controllers\OwnerStockController;
 use App\Http\Controllers\AdminStockController;
 use App\Http\Controllers\AdminAccoutsController;
-
+use App\Http\Controllers\AdminTransactionController;
 
 // Public Routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -22,7 +23,7 @@ Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::get('/register/owner', [AuthController::class, 'showOwnerRegisterForm'])->name('register.owner');
 Route::get('/register/customer', [AuthController::class, 'showCustomerRegisterForm'])->name('register.customer');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
-Route::get('/',function () {
+Route::get('/', function () {
     return view('welcome');
 })->name('landing');
 
@@ -38,7 +39,7 @@ Route::middleware('auth')->group(function () {
 // Admin Routes
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
-    
+
     Route::prefix('/stocks')->group(function () {
         Route::get('/', [AdminStockController::class, 'index'])->name('admin.stocks.index');
         Route::post('/{id}', [AdminStockController::class, 'update'])->name('admin.stocks.update');
@@ -49,6 +50,21 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
         Route::post('/update', [AdminAccoutsController::class, 'update'])->name('admin.accounts.update');
         Route::get('/{id}', [AdminAccoutsController::class, 'show'])->name('admin.accounts.show');
         Route::delete('/{id}', [AdminAccoutsController::class, 'destroy'])->name('admin.accounts.destroy');
+    });
+    Route::prefix('/transactions')->group(function () {
+        Route::get('/', [AdminTransactionController::class, 'index'])
+            ->name('admin.transactions.index');
+        Route::get('/{transaction}', [AdminTransactionController::class, 'show'])
+            ->name('admin.transactions.show');
+        Route::put('/{transaction}/status', [AdminTransactionController::class, 'updateStatus'])
+            ->name('admin.transactions.update-status');
+    });
+
+    Route::prefix('/fertilizers')->group(function () {
+        Route::get('/', [AdminFertilizerController::class, 'index'])->name('admin.stocks.inventory');
+        Route::post('/', [AdminFertilizerController::class, 'store'])->name('admin.fertilizers.store');
+        Route::put('/{fertilizer}', [AdminFertilizerController::class, 'update'])->name('admin.fertilizers.update');
+        Route::delete('/{fertilizer}', [AdminFertilizerController::class, 'destroy'])->name('admin.fertilizers.destroy');
     });
 });
 
