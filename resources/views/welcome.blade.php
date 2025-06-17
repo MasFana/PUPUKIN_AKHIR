@@ -62,7 +62,7 @@
                     rgba(240, 253, 244, 0.3) 0%, 
                     rgba(220, 252, 231, 0.3) 50%, 
                     rgba(187, 247, 208, 0.3) 100%),
-                    url('/landing.png');
+                    url('https://raw.githubusercontent.com/imamamacuuu/FanaImage/refs/heads/main/uploads/landing.png');
                 background-size: cover;
                 background-position: center;
                 background-repeat: no-repeat;
@@ -179,7 +179,7 @@
 
                     <div class="loading group relative mt-8 h-64 overflow-hidden rounded-xl md:h-80 lg:h-96">
                         <img class="h-full w-full transform object-cover object-top object-rig transition-transform duration-700 ease-out group-hover:scale-110 shadow-md"
-                            src="/petani.png" alt="Pupuk Bersubsidi">
+                            src="https://raw.githubusercontent.com/imamamacuuu/FanaImage/refs/heads/main/uploads/petani.png" alt="Pupuk Bersubsidi">
                         <div
                             class="absolute inset-0 bg-gradient-to-t from-green-900/90 via-green-800/50 to-transparent transition-opacity duration-300 group-hover:opacity-75">
                         </div>

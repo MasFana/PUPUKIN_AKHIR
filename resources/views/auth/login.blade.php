@@ -81,7 +81,7 @@
                 class="hidden flex-col items-center justify-center bg-gradient-to-br from-green-600 to-green-800 p-12 lg:flex lg:w-1/2">
                 <!-- Replace with your actual image -->
                 <h1 class="mb-4 text-4xl font-bold text-white">Selamat Datang di Pupukin</h1>
-                <img class="w-full max-w-md" src="/petani_login.png" alt="Agriculture Illustration">
+                <img class="w-full max-w-md" src="https://raw.githubusercontent.com/imamamacuuu/FanaImage/refs/heads/main/uploads/petani_login.png" alt="Agriculture Illustration">
             </div>
         </div>
     </main>
