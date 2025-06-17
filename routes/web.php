@@ -13,6 +13,8 @@ use App\Http\Controllers\CustomerOrderController;
 use App\Http\Controllers\CustomerShopsController;
 use App\Http\Controllers\OwnerStockController;
 use App\Http\Controllers\AdminStockController;
+use App\Http\Controllers\AdminAccoutsController;
+
 
 // Public Routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -41,6 +43,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
         Route::get('/', [AdminStockController::class, 'index'])->name('admin.stocks.index');
         Route::post('/{id}', [AdminStockController::class, 'update'])->name('admin.stocks.update');
     });
+    Route::prefix('/accounts')->group(function () {
+        Route::get('/', [AdminAccoutsController::class, 'index'])->name('admin.accounts.index');
+        Route::get('/edit/{id}', [AdminAccoutsController::class, 'edit'])->name('admin.accounts.edit');
+        Route::post('/update', [AdminAccoutsController::class, 'update'])->name('admin.accounts.update');
+        Route::get('/{id}', [AdminAccoutsController::class, 'show'])->name('admin.accounts.show');
+        Route::delete('/{id}', [AdminAccoutsController::class, 'destroy'])->name('admin.accounts.destroy');
+    });
 });
 
 // Owner Routes
@@ -48,7 +57,6 @@ Route::middleware(['auth', 'owner'])->prefix('owner')->group(function () {
     Route::get('/', [OwnerController::class, 'index'])->name('owner.dashboard');
     Route::group(['prefix' => 'transactions'], function () {
         Route::get('/', [OwnerTransactionController::class, 'index'])->name('owner.transactions.index');
-        // Route::get('/{id}', [OwnerTransactionController::class, 'show'])->name('owner.transactions.show');
         Route::post('/{id}/complete', [OwnerTransactionController::class, 'completed'])->name('owner.transactions.completed');
         Route::post('/{id}/cancel', [OwnerTransactionController::class, 'canceled'])->name('owner.transactions.canceled');
     });
@@ -61,7 +69,6 @@ Route::middleware(['auth', 'owner'])->prefix('owner')->group(function () {
         Route::get('/', [OwnerStockController::class, 'index'])->name('owner.stocks.index');
         Route::post('/requests', [OwnerStockController::class, 'storeRequest'])->name('owner.stocks.requests.store');
         Route::delete('/requests/{id}', [OwnerStockController::class, 'destroyRequest'])->name('owner.stocks.requests.destroy');
-        // Additional routes for stocks can be added here
     });
 });
 
