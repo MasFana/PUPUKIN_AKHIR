@@ -10,7 +10,7 @@
     <div class="container mx-auto px-4 py-8">
         
         <div class="overflow-hidden rounded-lg bg-white shadow-md">
-            <div class="p-4 justify-between bg-green-600 text-white">
+            <div class="p-6 justify-between bg-green-600 text-white">
                 <h1 class="text-xl font-bold ">Manajemen Akun Pengguna</h1>
                 <p class="text-sm">Kelola semua akun pengguna di sini</p>
             </div>

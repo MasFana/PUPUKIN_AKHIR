@@ -11,10 +11,10 @@
     <main class="container mx-auto px-4 py-6">
 
         <!-- Main Table Section -->
-        <div class="overflow-auto rounded-lg bg-green-600 shadow">
-            <div class="flex items-center justify-between py-2">
+        <div class="overflow-auto rounded-lg bg-green-600 shadow mt-2">
+            <div class="flex items-center justify-between ">
 
-                <div class="px-6 py-5">
+                <div class="p-6">
                     <h2 class="text-lg font-semibold text-white">Manajemen Pupuk</h2>
                     <p class="mt-1 text-sm text-gray-50">Berikut adalah daftar pupuk yang tersedia.</p>
                 </div>

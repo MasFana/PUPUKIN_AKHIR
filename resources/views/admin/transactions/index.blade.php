@@ -6,7 +6,7 @@
 <div class="container mx-auto px-4 py-8">
     <div class="bg-white shadow rounded-lg overflow-hidden">
         <!-- Header -->
-        <div class="px-6 py-4 border-b border-gray-200 bg-green-600">
+        <div class="p-6 border-b border-gray-200 bg-green-600">
             <div class="flex items-center justify-between">
                 <div>
                     <h1 class="text-xl font-bold text-white">Manajemen Transaksi</h1>

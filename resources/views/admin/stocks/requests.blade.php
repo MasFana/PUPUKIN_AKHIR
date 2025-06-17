@@ -8,8 +8,8 @@
     <div class="container mx-auto px-4 py-8">
 
         <div class="overflow-hidden bg-white shadow sm:rounded-lg">
-            <div class="border-b border-gray-200 bg-green-600 px-4 py-5 sm:px-6">
-                <h3 class="text-lg font-medium leading-6 text-white">
+            <div class="border-b border-gray-200 bg-green-600 p-6">
+                <h3 class="text-lg font-bold leading-6 text-white">
                     Daftar Permintaan
                 </h3>
                 <p class="mt-1 max-w-2xl text-sm text-white">
