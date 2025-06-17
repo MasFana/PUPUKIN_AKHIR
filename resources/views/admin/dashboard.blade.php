@@ -8,7 +8,7 @@
         <!-- Header -->
         <div class="mb-8">
             <h1 class="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
-            <p class="mt-2 text-sm text-gray-600">Ringkasan aktivitas dan statistik sistem</p>
+            <p class="mt-2 text-sm text-gray-600"></p>
         </div>
 
         <!-- Stats Cards -->
