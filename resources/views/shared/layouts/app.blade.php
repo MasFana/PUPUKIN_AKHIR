@@ -40,7 +40,12 @@
 
         @yield('content')
     </body>
-
+        <!-- Footer -->
+        <footer class="bg-green-900 py-8 text-white">
+            <div class="container mx-auto px-4 text-center">
+                <p>&copy; <span id="current-year"></span> Pupukin App. All rights reserved.</p>
+            </div>
+        </footer>
     @stack('scripts')
 
 </html>
