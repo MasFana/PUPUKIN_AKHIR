@@ -28,12 +28,10 @@ Route::get('/', function () {
 })->name('landing');
 
 
-
 // Shared Auth Routes
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
-
 
 
 // Admin Routes
