@@ -24,6 +24,7 @@ class Customer extends Model
     {
         return $this->hasMany(Transaction::class);
     }
+    
     public function quotas()
     {
         return $this->hasMany(Quota::class);

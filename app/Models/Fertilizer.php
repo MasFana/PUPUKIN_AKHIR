@@ -25,6 +25,10 @@ class Fertilizer extends Model
     {
         return $this->hasMany(Transaction::class);
     }
+    public function stocks()
+    {
+        return $this->hasMany(Stock::class);
+    }
 
 
     public function getFormattedPricePerKgAttribute($value)

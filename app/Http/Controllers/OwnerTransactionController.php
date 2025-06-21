@@ -83,7 +83,7 @@ class OwnerTransactionController extends Controller
 
         DB::transaction(function () use ($transaction) {
             // Return stock to fertilizer
-            $transaction->fertilizer()->increment('stock', $transaction->quantity_kg);
+            $transaction->fertilizer()->increment('stocks', $transaction->quantity_kg);
 
             // Return quota to customer
             $transaction->customer()->increment('remaining_kg', $transaction->quantity_kg);
