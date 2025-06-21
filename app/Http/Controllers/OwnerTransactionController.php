@@ -83,10 +83,18 @@ class OwnerTransactionController extends Controller
 
         DB::transaction(function () use ($transaction) {
             // Return stock to fertilizer
-            $transaction->fertilizer()->increment('stocks', $transaction->quantity_kg);
+            DB::table('stocks')
+                ->where('owner_id', $transaction->owner_id)
+                ->where('fertilizer_id', $transaction->fertilizer_id)
+                ->increment('quantity_kg', $transaction->quantity_kg);
+
+            
 
             // Return quota to customer
-            $transaction->customer()->increment('remaining_kg', $transaction->quantity_kg);
+            DB::table('quotas')
+                ->where('customer_id', $transaction->customer_id)
+                ->where('fertilizer_id', $transaction->fertilizer_id)
+                ->increment('remaining_kg', $transaction->quantity_kg);
 
             // Update transaction status
             $transaction->update([
